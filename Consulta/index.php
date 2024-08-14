@@ -1,7 +1,11 @@
 <?php
     include '../config.php';
-    //$sql = "SELECT * FROM Consulta";
-    //$result = $conn->query($sql);
+
+    $sql = "SELECT Consulta.*, Animal.nome AS animal_nome, Pessoa.nome AS veterinario_nome 
+            FROM Consulta 
+            JOIN Animal ON Consulta.idAnimal = Animal.idAnimal
+            JOIN Pessoa ON Consulta.idPessoa = Pessoa.idPessoa";
+    $result = $conn->query($sql);
 ?>
 
 <!DOCTYPE html>
@@ -19,11 +23,80 @@
         <a href="index.php">Consulta</a>
     </div>
 
-    <h2>Em construção... :O</h2>
+    <?php
+        $message = isset($_GET['message']) ? $_GET['message'] : '';
+        $type = isset($_GET['type']) ? $_GET['type'] : '';
 
+        if ($message) {
+            $class = ($type === 'success') ? 'success-message' : 'error-message';
+            echo "<div class='$class'>$message</div>";
+        }
+    ?>
+
+    <h2>Lista de Consultas</h2>
+    <button><a href="create.php">Adicionar Nova Consulta</a></button>
+    <table border="1">
+        <tr>
+            <th>ID</th>
+            <th>Animal</th>
+            <th>Data da Consulta</th>
+            <th>Veterinário</th>
+            <th>Data Real de Retorno</th>
+            <th>Data Limite de Retorno</th>
+            <th>Ações</th>
+        </tr>
+        <?php
+            if ($result->num_rows > 0) {
+                while($row = $result->fetch_assoc()) {
+                    echo "<tr>";
+                    echo "<td>" . $row["idConsulta"] . "</td>";
+                    echo "<td>" . $row["animal_nome"] . "</td>";
+                    echo "<td>" . $row["dataConsulta"] . "</td>";
+                    echo "<td>" . $row["veterinario_nome"] . "</td>";
+                    echo "<td>" . $row["dataRealRetorno"] . "</td>";
+                    echo "<td>" . $row["dataLimiteRetorno"] . "</td>";
+                    echo "<td><a href='update.php?idConsulta=" . $row["idConsulta"] . "'>Editar</a> | ";
+                    echo "<a href='#' onclick='confirmDelete(" . $row["idConsulta"] . ")'>Deletar</a> | ";
+                    echo "<a href='visualizar.php?idConsulta=' " . $row["idConsulta"] . " '>Visualizar</a> </td>";
+                    echo "</tr>";
+                }
+            } else {
+                echo "<tr><td colspan='7'>Nenhuma consulta encontrada</td></tr>";
+            }
+            $conn->close();
+        ?>
+    </table>
+
+    <!-- Modal de Confirmação -->
+    <div id="deleteModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <p>Tem certeza que deseja deletar esta consulta?</p>
+            <a id="confirmDeleteButton" href="#" class="modal-button">Sim</a>
+            <button class="cancel-button" onclick="closeModal()">Cancelar</button>
+        </div>
+    </div>
+
+    <script>
+        function confirmDelete(idConsulta) {
+            var modal = document.getElementById("deleteModal");
+            var confirmButton = document.getElementById("confirmDeleteButton");
+            confirmButton.href = "delete.php?idConsulta=" + idConsulta;
+            modal.style.display = "block";
+        }
+
+        function closeModal() {
+            var modal = document.getElementById("deleteModal");
+            modal.style.display = "none";
+        }
+
+        // Fecha o modal se o usuário clicar fora dele
+        window.onclick = function(event) {
+            var modal = document.getElementById("deleteModal");
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+    </script>
 </body>
 </html>
-
-<?php
-    $conn->close();
-?>
