@@ -60,7 +60,10 @@
 <body>
     <div class="navbar">
         <a href="index.php">Pessoa</a>
-        <a href="animal.php">Animal</a>
+        <a href="../Animal/index.php">Animal</a>
+        <a href="../Exame/index.php">Exame</a>
+        <a href="../Medicamento/index.php">Medicamento</a>
+        <a href="../Consulta/index.php">Consulta</a>
     </div>
 
     <h2>Editar Pessoa</h2>

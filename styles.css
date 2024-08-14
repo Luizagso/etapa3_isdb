@@ -77,6 +77,34 @@ form select {
     font-size: 16px;
 }
 
+input[type="date"] {
+    width: calc(100% - 22px); /* Ajusta a largura para considerar padding e border */
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-size: 16px;
+    font-family: Arial, sans-serif;
+}
+
+/* Estilo para inputs de data */
+input[type="date"] {
+    appearance: none; /* Remove o estilo nativo */
+    background-color: white;
+    color: #333;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+    color: #333;
+    opacity: 0.5;
+}
+
+input[type="date"]:focus {
+    border-color: #007bff;
+    outline: none;
+}
+
 /* Estilo para o botão de envio */
 form input[type="submit"] {
     background-color: #2c3e50;

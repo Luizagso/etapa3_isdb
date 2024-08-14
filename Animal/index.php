@@ -17,8 +17,8 @@
         <a href="../Pessoa/index.php">Pessoa</a>
         <a href="index.php">Animal</a>
         <a href="../Exame/index.php">Exame</a>
-        <a href="../Consulta/index.php">Consulta</a>
         <a href="../Medicamento/index.php">Medicamento</a>
+        <a href="../Consulta/index.php">Consulta</a>
     </div>
 
     <?php
