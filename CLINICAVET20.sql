@@ -16,7 +16,7 @@ CREATE TABLE IF NOT EXISTS Pessoa (
     estado VARCHAR(60) NOT NULL,
     rua VARCHAR(60) NOT NULL,
     complemento VARCHAR(10) NULL,
-    tipo ENUM('Veterinario', 'Tutor') NOT NULL DEFAULT 'Tutor'
+    tipo ENUM('Veterinario', 'Tutor', 'Ambos') NOT NULL DEFAULT 'Tutor'
 );
 
 -- Criação da tabela Contatos

@@ -86,7 +86,7 @@
         <select name="idPessoa" required>
             <option value="">Selecione o Veterinário</option>
             <?php
-                $sql = "SELECT idPessoa, nome FROM Pessoa WHERE tipo = 'Veterinario'";
+                $sql = "SELECT idPessoa, nome FROM Pessoa WHERE tipo = 'Veterinario' OR tipo = 'Ambos'";
                 $result = $conn->query($sql);
 
                 if ($result->num_rows > 0) {
