@@ -2,7 +2,8 @@
     include '../config.php';
     $sql = "SELECT Animal.*, Pessoa.nome AS tutor_nome 
             FROM Animal 
-            JOIN Pessoa ON Animal.idPessoa = Pessoa.idPessoa";
+            JOIN Pessoa ON Animal.idPessoa = Pessoa.idPessoa
+            ORDER BY Animal.nome";
     $result = $conn->query($sql);
 ?>
 

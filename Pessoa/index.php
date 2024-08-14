@@ -1,6 +1,6 @@
 <?php
     include '../config.php';
-    $sql = "SELECT * FROM Pessoa";
+    $sql = "SELECT * FROM Pessoa ORDER BY nome";
     $result = $conn->query($sql);
 ?>
 
