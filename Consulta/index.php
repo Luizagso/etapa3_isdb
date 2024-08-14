@@ -1,10 +1,11 @@
 <?php
     include '../config.php';
 
-    $sql = "SELECT Consulta.*, Animal.nome AS animal_nome, Pessoa.nome AS veterinario_nome 
-            FROM Consulta 
-            JOIN Animal ON Consulta.idAnimal = Animal.idAnimal
-            JOIN Pessoa ON Consulta.idPessoa = Pessoa.idPessoa";
+    $sql = "SELECT Consulta.*, Animal.nome AS animal_nome, Pessoa.nome AS veterinario_nome, Tutor.nome AS tutor_nome 
+        FROM Consulta 
+        JOIN Animal ON Consulta.idAnimal = Animal.idAnimal
+        JOIN Pessoa ON Consulta.idPessoa = Pessoa.idPessoa
+        JOIN Pessoa AS Tutor ON Animal.idPessoa = Tutor.idPessoa";
     $result = $conn->query($sql);
 ?>
 
@@ -39,6 +40,7 @@
         <tr>
             <th>ID</th>
             <th>Animal</th>
+            <th>Tutor</th>
             <th>Data da Consulta</th>
             <th>Veterinário</th>
             <th>Data Real de Retorno</th>
@@ -48,16 +50,21 @@
         <?php
             if ($result->num_rows > 0) {
                 while($row = $result->fetch_assoc()) {
+
+                    // Verifica se a data real de retorno é nula e substitui por 'Não informado'
+                    $dataRealRetorno = (!empty($row["dataRealRetorno"]) || !$row["dataRealRetorno"] == '' ) ? $row["dataRealRetorno"] : 'Não informado';
+
                     echo "<tr>";
                     echo "<td>" . $row["idConsulta"] . "</td>";
                     echo "<td>" . $row["animal_nome"] . "</td>";
+                    echo "<td>" . $row["tutor_nome"] . "</td>";
                     echo "<td>" . $row["dataConsulta"] . "</td>";
                     echo "<td>" . $row["veterinario_nome"] . "</td>";
-                    echo "<td>" . $row["dataRealRetorno"] . "</td>";
+                    echo "<td>" . $dataRealRetorno . "</td>";
                     echo "<td>" . $row["dataLimiteRetorno"] . "</td>";
                     echo "<td><a href='update.php?idConsulta=" . $row["idConsulta"] . "'>Editar</a> | ";
                     echo "<a href='#' onclick='confirmDelete(" . $row["idConsulta"] . ")'>Deletar</a> | ";
-                    echo "<a href='visualizar.php?idConsulta=' " . $row["idConsulta"] . " '>Visualizar</a> </td>";
+                    echo "<a href='visualizar.php?idConsulta= " . $row["idConsulta"] . " '>Visualizar</a> </td>";
                     echo "</tr>";
                 }
             } else {
