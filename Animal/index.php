@@ -48,11 +48,15 @@
         <?php
         if ($result->num_rows > 0) {
             while($row = $result->fetch_assoc()) {
+
+                // Formata a data de nascimento
+                $dataNasc = date('d/m/Y', strtotime($row["dataNasc"]));
+
                 echo "<tr>";
                 echo "<td>" . $row["idAnimal"]. "</td>";
                 echo "<td>" . $row["registro"]. "</td>";
                 echo "<td>" . $row["nome"]. "</td>";
-                echo "<td>" . $row["dataNasc"]. "</td>";
+                echo "<td>" . $dataNasc. "</td>";
                 echo "<td>" . $row["raca"]. "</td>";
                 echo "<td>" . $row["especie"]. "</td>";
                 echo "<td>" . $row["sexo"]. "</td>";

@@ -77,7 +77,8 @@ form select {
     font-size: 16px;
 }
 
-input[type="date"] {
+input[type="date"],
+input[type="datetime-local"] {
     width: calc(100% - 22px); /* Ajusta a largura para considerar padding e border */
     padding: 10px;
     margin-bottom: 20px;
@@ -89,18 +90,21 @@ input[type="date"] {
 }
 
 /* Estilo para inputs de data */
-input[type="date"] {
+input[type="date"], 
+input[type="datetime-local"] {
     appearance: none; /* Remove o estilo nativo */
     background-color: white;
     color: #333;
 }
 
-input[type="date"]::-webkit-calendar-picker-indicator {
+input[type="date"]::-webkit-calendar-picker-indicator,
+input[type="datetime-local"]::-webkit-calendar-picker-indicator {
     color: #333;
     opacity: 0.5;
 }
 
-input[type="date"]:focus {
+input[type="date"]:focus,
+input[type="datetime-local"]:focus {
     border-color: #007bff;
     outline: none;
 }
@@ -279,4 +283,17 @@ button:hover{
 
 .cancel-button:hover {
     background-color: #c0392b;
+}
+
+/* Estilo para o texto informativo */
+.info-text {
+    font-size: 12px;
+    color: #777;
+    display: block;
+    margin-top: -15px; /* Ajusta o espaçamento conforme necessário */
+    margin-bottom: 10px;
+}
+
+#dataLimiteRetorno {
+    background-color: rgb(197, 197, 197);
 }

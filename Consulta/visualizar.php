@@ -49,7 +49,7 @@ $conn->close();
             </tr>
             <tr>
                 <th>Data da Consulta</th>
-                <td><?php echo $consulta['dataConsulta']; ?></td>
+                <td><?php echo date('d/m/Y H:i', strtotime($consulta["dataConsulta"])); ?></td>
             </tr>
             <tr>
                 <th>Veterinário</th>
@@ -57,11 +57,11 @@ $conn->close();
             </tr>
             <tr>
                 <th>Data Real de Retorno</th>
-                <td><?php echo !empty($consulta['dataRealRetorno']) ? $consulta['dataRealRetorno'] : 'Não informado'; ?></td>
+                <td><?php echo (!empty($consulta["dataRealRetorno"]) && $consulta["dataRealRetorno"] != '0000-00-00 00:00:00') ? date('d/m/Y H:i', strtotime($consulta["dataRealRetorno"])) : 'Não informado'; ?></td>
             </tr>
             <tr>
                 <th>Data Limite de Retorno</th>
-                <td><?php echo $consulta['dataLimiteRetorno']; ?></td>
+                <td><?php echo date('d/m/Y', strtotime($consulta["dataLimiteRetorno"])); ?></td>
             </tr>
         </table>
 

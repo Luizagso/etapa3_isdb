@@ -51,12 +51,12 @@ CREATE TABLE IF NOT EXISTS Animal (
 
 -- Criação da tabela Consulta
 CREATE TABLE IF NOT EXISTS Consulta (
-    idConsulta INT NOT NULL PRIMARY KEY,
+    idConsulta INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
     idAnimal INT NOT NULL,
     dataConsulta DATETIME NOT NULL,
     idPessoa INT NOT NULL,
     dataRealRetorno DATETIME NULL,
-    dataLimiteRetorno DATETIME NOT NULL,
+    dataLimiteRetorno DATE NOT NULL,
     UNIQUE KEY (dataConsulta, idAnimal),
     CONSTRAINT fk_Consulta_Animal
         FOREIGN KEY (idAnimal)

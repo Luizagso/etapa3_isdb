@@ -5,12 +5,13 @@
         $idAnimal = $_POST['idAnimal'];
         $dataConsulta = $_POST['dataConsulta'];
         $idPessoa = $_POST['idPessoa'];
-        $dataRealRetorno = $_POST['dataRealRetorno'];
+        $dataRealRetorno = !empty($_POST['dataRealRetorno']) ? "'".$_POST['dataRealRetorno']."'" : "NULL"; // Verifica se o campo está vazio
         $dataLimiteRetorno = $_POST['dataLimiteRetorno'];
 
         try {
+            // Monta a consulta SQL
             $sql = "INSERT INTO Consulta (idAnimal, dataConsulta, idPessoa, dataRealRetorno, dataLimiteRetorno)
-                    VALUES ('$idAnimal', '$dataConsulta', '$idPessoa', '$dataRealRetorno', '$dataLimiteRetorno')";
+                    VALUES ('$idAnimal', '$dataConsulta', '$idPessoa', $dataRealRetorno, '$dataLimiteRetorno')";
 
             if ($conn->query($sql) === TRUE) {
                 echo "<div class='success-message'>Nova consulta criada com sucesso!</div>";
@@ -19,10 +20,9 @@
             }
 
         } catch (mysqli_sql_exception $e) {
-            echo "<div class='error-message'>Erro ao tentar criar a consulta: " . $e->getMessage() . "</div>";
+            echo $e->getMessage();
+            echo "<div class='error-message'>Não foi possível salvar o registro. Verifique se essa consulta pode ser cadastrada ou se os campos estão preenchidos corretamente.</div>";
         }
-
-        $conn->close();
     }
 ?>
 
@@ -60,7 +60,7 @@
         </select><br>
 
         <label for="dataConsulta">Data da Consulta:</label>
-        <input type="datetime-local" name="dataConsulta" required><br>
+        <input type="datetime-local" name="dataConsulta" id="dataConsulta" required oninput="calcularDataLimite()"><br>
 
         <label for="idPessoa">Veterinário:</label>
         <select name="idPessoa" required>
@@ -83,9 +83,34 @@
         <input type="datetime-local" name="dataRealRetorno"><br>
 
         <label for="dataLimiteRetorno">Data Limite de Retorno:</label>
-        <input type="datetime-local" name="dataLimiteRetorno" required><br>
+        <input type="date" name="dataLimiteRetorno" id="dataLimiteRetorno" readonly required><br>
+        <small class="info-text">Esse valor corresponde a 30 dias após a data da consulta.</small><br>
 
         <input type="submit" value="Adicionar Consulta">
     </form>
+
+    <script>
+        function calcularDataLimite() {
+            console.log('OK');
+            // Obtém a data da consulta
+            var dataConsulta = document.getElementById('dataConsulta').value;
+
+            // Verifica se a data da consulta foi inserida
+            if (dataConsulta) {
+                // Cria um objeto Date a partir da data da consulta
+                var data = new Date(dataConsulta);
+
+                // Adiciona 30 dias
+                data.setDate(data.getDate() + 30);
+
+                // Formata a data para o formato 'YYYY-MM-DD'
+                var dataFormatada = data.toISOString().split('T')[0];
+
+                // Define a data no campo de data limite
+                document.getElementById('dataLimiteRetorno').value = dataFormatada;
+            }
+        }
+    </script>
+
 </body>
 </html>

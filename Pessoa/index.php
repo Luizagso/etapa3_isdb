@@ -62,7 +62,8 @@
                 echo "<td>" . $row["complemento"]. "</td>";
                 echo "<td>" . $row["tipo"]. "</td>";
                 echo "<td><a href='update.php?idPessoa=" . $row["idPessoa"] . "'>Editar</a> | ";
-                echo "<a href='#' onclick='confirmDelete(" . $row["idPessoa"] . ")'>Deletar</a></td>";
+                echo "<a href='#' onclick='confirmDelete(" . $row["idPessoa"] . ")'>Deletar</a> | ";
+                echo "<a href='visualizar.php?idPessoa= " . $row["idPessoa"] . " '>Visualizar</a> </td>";
                 echo "</tr>";
             }
         } else {
