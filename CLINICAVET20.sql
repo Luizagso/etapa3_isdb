@@ -4,7 +4,7 @@
 CREATE DATABASE IF NOT EXISTS ClinicaVeterinaria DEFAULT CHARACTER SET utf8 ;
 USE ClinicaVeterinaria ;
 
--- Criação da tabela Pessoa
+-- Criação da tabela Pessoa 
 CREATE TABLE IF NOT EXISTS Pessoa (
     idPessoa INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     CRMV VARCHAR(20) UNIQUE NULL,
@@ -151,56 +151,56 @@ INSERT INTO Pessoa (idPessoa, CRMV, CPF, nome, bairro, numero, cidade, estado, r
 (1, '123456-SP', '111.222.333-44', 'Dr. João Silva', 'Centro', 10, 'Lisboa', 'LI', 'Rua A', '', 'Veterinario'),
 (2, '234567-SP', '222.333.444-55', 'Dra. Maria Oliveira', 'Bairro Alto', 23, 'Lisboa', 'LI', 'Rua B', '', 'Veterinario'),
 (3, '345678-SP', '333.444.555-66', 'Dr. Carlos Santos', 'Bela Vista', 45, 'Porto', 'PT', 'Rua C', '', 'Veterinario'),
-(4, '456789-SP', '444.555.666-77', 'Ana Costa', 'Jardim Botânico', 56, 'Coimbra', 'CB', 'Rua D', 'Apto 101', 'Tutor'),
-(5, '567890-SP', '555.666.777-88', 'João Pereira', 'Centro', 78, 'Faro', 'FA', 'Rua E', 'Casa 5', 'Tutor'),
-(6, '678901-SP', '666.777.888-99', 'Pedro Almeida', 'São Bento', 12, 'Braga', 'BR', 'Rua F', 'Apto 201', 'Tutor'),
-(7, '789012-SP', '777.888.999-00', 'José Silva', 'Alvalade', 34, 'Lisboa', 'LI', 'Rua G', '', 'Tutor'),
+(4, NULL, '444.555.666-77', 'Ana Costa', 'Jardim Botânico', 56, 'Coimbra', 'CB', 'Rua D', 'Apto 101', 'Tutor'),
+(5, NULL, '555.666.777-88', 'João Pereira', 'Centro', 78, 'Faro', 'FA', 'Rua E', 'Casa 5', 'Tutor'),
+(6, NULL, '666.777.888-99', 'Pedro Almeida', 'São Bento', 12, 'Braga', 'BR', 'Rua F', 'Apto 201', 'Tutor'),
+(7, NULL, '777.888.999-00', 'José Silva', 'Alvalade', 34, 'Lisboa', 'LI', 'Rua G', '', 'Tutor'),
 (8, '890123-SP', '888.999.000-11', 'Paula Mendes', 'Centro', 56, 'Faro', 'FA', 'Rua H', 'Apto 301', 'Veterinario'),
-(9, '901234-SP', '999.000.111-22', 'Carla Ribeiro', 'Campanhã', 78, 'Porto', 'PT', 'Rua I', '', 'Tutor'),
+(9, NULL, '999.000.111-22', 'Carla Ribeiro', 'Campanhã', 78, 'Porto', 'PT', 'Rua I', '', 'Tutor'),
 (10, '012345-SP', '000.111.222-33', 'Antônio Sousa', 'Baixa', 90, 'Lisboa', 'LI', 'Rua J', 'Casa 2', 'Veterinario'),
-(11, '123457-SP', '011.122.233-44', 'Rita Gomes', 'Vila Nova', 11, 'Braga', 'BR', 'Rua K', '', 'Tutor'),
-(12, '234568-SP', '022.133.244-55', 'Bruno Marques', 'Campo Grande', 22, 'Lisboa', 'LI', 'Rua L', 'Apto 402', 'Tutor'),
-(13, '345679-SP', '033.144.255-66', 'Letícia Faria', 'Centro', 33, 'Faro', 'FA', 'Rua M', '', 'Tutor'),
+(11, NULL, '011.122.233-44', 'Rita Gomes', 'Vila Nova', 11, 'Braga', 'BR', 'Rua K', '', 'Tutor'),
+(12, NULL, '022.133.244-55', 'Bruno Marques', 'Campo Grande', 22, 'Lisboa', 'LI', 'Rua L', 'Apto 402', 'Tutor'),
+(13, NULL, '033.144.255-66', 'Letícia Faria', 'Centro', 33, 'Faro', 'FA', 'Rua M', '', 'Tutor'),
 (14, '456780-SP', '044.155.266-77', 'Marcos Teixeira', 'Trindade', 44, 'Porto', 'PT', 'Rua N', 'Casa 3', 'Veterinario'),
-(15, '567891-SP', '055.166.277-88', 'Fernanda Lima', 'Jardins', 55, 'Lisboa', 'LI', 'Rua O', 'Apto 503', 'Tutor'),
-(16, '678902-SP', '066.177.288-99', 'Luís Neves', 'Sé', 66, 'Braga', 'BR', 'Rua P', '', 'Tutor'),
+(15, NULL, '055.166.277-88', 'Fernanda Lima', 'Jardins', 55, 'Lisboa', 'LI', 'Rua O', 'Apto 503', 'Tutor'),
+(16, NULL, '066.177.288-99', 'Luís Neves', 'Sé', 66, 'Braga', 'BR', 'Rua P', '', 'Tutor'),
 (17, '789013-SP', '077.188.299-00', 'Mariana Costa', 'Bairro Alto', 77, 'Lisboa', 'LI', 'Rua Q', '', 'Veterinario'),
-(18, '890124-SP', '088.199.300-11', 'Tiago Freitas', 'Centro', 88, 'Faro', 'FA', 'Rua R', 'Apto 604', 'Tutor'),
-(19, '901235-SP', '099.200.311-22', 'Inês Barbosa', 'Baixa', 99, 'Lisboa', 'LI', 'Rua S', '', 'Tutor'),
+(18, NULL, '088.199.300-11', 'Tiago Freitas', 'Centro', 88, 'Faro', 'FA', 'Rua R', 'Apto 604', 'Tutor'),
+(19, NULL, '099.200.311-22', 'Inês Barbosa', 'Baixa', 99, 'Lisboa', 'LI', 'Rua S', '', 'Tutor'),
 (20, '012346-SP', '100.211.322-33', 'Jorge Coelho', 'São Martinho', 10, 'Coimbra', 'CB', 'Rua T', '', 'Veterinario'),
-(21, '123458-SP', '111.222.333-55', 'Carolina Duarte', 'Bela Vista', 12, 'Porto', 'PT', 'Rua U', '', 'Tutor'),
-(22, '234569-SP', '122.233.344-66', 'Renato Nogueira', 'Alcântara', 14, 'Lisboa', 'LI', 'Rua V', '', 'Tutor'),
+(21, NULL, '111.222.333-55', 'Carolina Duarte', 'Bela Vista', 12, 'Porto', 'PT', 'Rua U', '', 'Tutor'),
+(22, NULL, '122.233.344-66', 'Renato Nogueira', 'Alcântara', 14, 'Lisboa', 'LI', 'Rua V', '', 'Tutor'),
 (23, '345680-SP', '133.244.355-77', 'Tatiana Rodrigues', 'São Bento', 16, 'Braga', 'BR', 'Rua W', '', 'Veterinario'),
-(24, '456791-SP', '144.255.366-88', 'Luciana Matos', 'Campo Grande', 18, 'Lisboa', 'LI', 'Rua X', '', 'Tutor'),
-(25, '567902-SP', '155.266.377-99', 'Diego Rocha', 'Centro', 20, 'Faro', 'FA', 'Rua Y', 'Casa 6', 'Tutor');
+(24, NULL, '144.255.366-88', 'Luciana Matos', 'Campo Grande', 18, 'Lisboa', 'LI', 'Rua X', '', 'Tutor'),
+(25, NULL, '155.266.377-99', 'Diego Rocha', 'Centro', 20, 'Faro', 'FA', 'Rua Y', 'Casa 6', 'Tutor');
 
 -- Inserção na tabela Pessoa (25 registros)
 INSERT INTO Pessoa (idPessoa, CRMV, CPF, nome, bairro, numero, cidade, estado, rua, complemento, tipo) VALUES
-(26, '678913-SP', '166.277.388-00', 'Simone Mendes', 'Vila Nova', 22, 'Braga', 'BR', 'Rua Z', '', 'Tutor'),
+(26, NULL, '166.277.388-00', 'Simone Mendes', 'Vila Nova', 22, 'Braga', 'BR', 'Rua Z', '', 'Tutor'),
 (27, '789024-SP', '177.288.399-11', 'Fábio Sousa', 'Jardim Botânico', 24, 'Coimbra', 'CB', 'Rua AA', '', 'Veterinario'),
-(28, '890135-SP', '188.299.400-22', 'Nádia Fernandes', 'Campanhã', 26, 'Porto', 'PT', 'Rua BB', '', 'Tutor'),
-(29, '901246-SP', '199.300.411-33', 'César Silva', 'Centro', 28, 'Lisboa', 'LI', 'Rua CC', 'Apto 703', 'Tutor'),
+(28, NULL, '188.299.400-22', 'Nádia Fernandes', 'Campanhã', 26, 'Porto', 'PT', 'Rua BB', '', 'Tutor'),
+(29, NULL, '199.300.411-33', 'César Silva', 'Centro', 28, 'Lisboa', 'LI', 'Rua CC', 'Apto 703', 'Tutor'),
 (30, '012357-SP', '200.311.422-44', 'Juliana Reis', 'Baixa', 30, 'Lisboa', 'LI', 'Rua DD', '', 'Veterinario'),
-(31, '123459-SP', '211.322.433-55', 'Bruno Carvalho', 'Trindade', 32, 'Porto', 'PT', 'Rua EE', '', 'Tutor'),
-(32, '234570-SP', '222.333.444-66', 'Marta Oliveira', 'Centro', 34, 'Faro', 'FA', 'Rua FF', '', 'Tutor'),
+(31, NULL, '211.322.433-55', 'Bruno Carvalho', 'Trindade', 32, 'Porto', 'PT', 'Rua EE', '', 'Tutor'),
+(32, NULL, '222.333.444-66', 'Marta Oliveira', 'Centro', 34, 'Faro', 'FA', 'Rua FF', '', 'Tutor'),
 (33, '345681-SP', '233.344.455-77', 'Rodrigo Alves', 'Bairro Alto', 36, 'Lisboa', 'LI', 'Rua GG', 'Casa 7', 'Veterinario'),
-(34, '456792-SP', '244.355.466-88', 'Daniela Santos', 'Alvalade', 38, 'Lisboa', 'LI', 'Rua HH', '', 'Tutor'),
-(35, '567903-SP', '255.366.477-99', 'Lucas Martins', 'Centro', 40, 'Faro', 'FA', 'Rua II', '', 'Tutor'),
-(36, '678914-SP', '266.377.488-00', 'Cláudia Pinto', 'Baixa', 42, 'Lisboa', 'LI', 'Rua JJ', '', 'Tutor'),
+(34, NULL, '244.355.466-88', 'Daniela Santos', 'Alvalade', 38, 'Lisboa', 'LI', 'Rua HH', '', 'Tutor'),
+(35, NULL, '255.366.477-99', 'Lucas Martins', 'Centro', 40, 'Faro', 'FA', 'Rua II', '', 'Tutor'),
+(36, NULL, '266.377.488-00', 'Cláudia Pinto', 'Baixa', 42, 'Lisboa', 'LI', 'Rua JJ', '', 'Tutor'),
 (37, '789025-SP', '277.388.499-11', 'Marcelo Gomes', 'Sé', 44, 'Braga', 'BR', 'Rua KK', '', 'Veterinario'),
-(38, '890136-SP', '288.399.500-22', 'André Silva', 'Vila Nova', 46, 'Braga', 'BR', 'Rua LL', '', 'Tutor'),
-(39, '901247-SP', '299.400.511-33', 'Patrícia Sousa', 'Centro', 48, 'Faro', 'FA', 'Rua MM', '', 'Tutor'),
-(40, '012358-SP', '300.411.522-44', 'Roberta Teixeira', 'Baixa', 50, 'Lisboa', 'LI', 'Rua NN', '', 'Tutor'),
+(38, NULL, '288.399.500-22', 'André Silva', 'Vila Nova', 46, 'Braga', 'BR', 'Rua LL', '', 'Tutor'),
+(39, NULL, '299.400.511-33', 'Patrícia Sousa', 'Centro', 48, 'Faro', 'FA', 'Rua MM', '', 'Tutor'),
+(40, NULL, '300.411.522-44', 'Roberta Teixeira', 'Baixa', 50, 'Lisboa', 'LI', 'Rua NN', '', 'Tutor'),
 (41, '123460-SP', '311.422.533-55', 'Vinícius Oliveira', 'Alcântara', 52, 'Lisboa', 'LI', 'Rua OO', 'Casa 8', 'Veterinario'),
-(42, '234571-SP', '322.433.544-66', 'Érica Costa', 'Jardins', 54, 'Lisboa', 'LI', 'Rua PP', '', 'Tutor'),
-(43, '345682-SP', '333.444.555-77', 'Felipe Mendes', 'Bela Vista', 56, 'Porto', 'PT', 'Rua QQ', '', 'Tutor'),
+(42, NULL, '322.433.544-66', 'Érica Costa', 'Jardins', 54, 'Lisboa', 'LI', 'Rua PP', '', 'Tutor'),
+(43, NULL, '333.444.555-77', 'Felipe Mendes', 'Bela Vista', 56, 'Porto', 'PT', 'Rua QQ', '', 'Tutor'),
 (44, '456793-SP', '344.455.566-88', 'Renata Figueiredo', 'São Martinho', 58, 'Coimbra', 'CB', 'Rua RR', '', 'Veterinario'),
-(45, '567904-SP', '355.466.577-99', 'Gustavo Lima', 'Campo Grande', 60, 'Lisboa', 'LI', 'Rua SS', 'Apto 804', 'Tutor'),
-(46, '678915-SP', '366.477.588-00', 'Amanda Ferreira', 'Centro', 62, 'Faro', 'FA', 'Rua TT', '', 'Tutor'),
-(47, '789026-SP', '377.488.599-11', 'Sérgio Almeida', 'Campanhã', 64, 'Porto', 'PT', 'Rua UU', '', 'Tutor'),
-(48, '890137-SP', '388.499.600-22', 'Thais Rodrigues', 'Baixa', 66, 'Lisboa', 'LI', 'Rua VV', '', 'Tutor'),
-(49, '901248-SP', '399.500.611-33', 'Eduardo Moreira', 'Centro', 68, 'Faro', 'FA', 'Rua WW', 'Apto 904', 'Veterinario'),
-(50, '904247-SP', '399.540.611-33', 'Luiza Silva', 'Betânia', 68, 'Belo Horizonte', 'MG', 'Rua WW', 'Apto 904', 'Tutor');
+(45, NULL, '355.466.577-99', 'Gustavo Lima', 'Campo Grande', 60, 'Lisboa', 'LI', 'Rua SS', 'Apto 804', 'Tutor'),
+(46, NULL, '366.477.588-00', 'Amanda Ferreira', 'Centro', 62, 'Faro', 'FA', 'Rua TT', '', 'Tutor'),
+(47, NULL, '377.488.599-11', 'Sérgio Almeida', 'Campanhã', 64, 'Porto', 'PT', 'Rua UU', '', 'Tutor'),
+(48, NULL, '388.499.600-22', 'Thais Rodrigues', 'Baixa', 66, 'Lisboa', 'LI', 'Rua VV', '', 'Tutor'),
+(49, '901248-SP', '399.500.611-33', 'Eduardo Moreira', 'Centro', 68, 'Faro', 'FA', 'Rua WW', 'Apto 904', 'Ambos'),
+(50, NULL, '399.540.611-33', 'Luiza Silva', 'Betânia', 68, 'Belo Horizonte', 'MG', 'Rua WW', 'Apto 904', 'Tutor');
 
 -- Inserção na tabela Contatos (25 registros)
 INSERT INTO Contatos (idContato, telefone, email, idPessoa) VALUES
@@ -260,54 +260,54 @@ INSERT INTO Contatos (idContato, telefone, email, idPessoa) VALUES
 
 -- Inserção na tabela Animal (25 registros)
 INSERT INTO Animal (idAnimal, registro, idPessoa, nome, dataNasc, raca, especie, sexo) VALUES
-(1, 'AN-001', 1, 'Rex', '2020-01-01', 'Labrador', 'Cão', 'Macho'),
-(2, 'AN-002', 2, 'Luna', '2019-05-15', 'Poodle', 'Cão', 'Fêmea'),
-(3, 'AN-003', 3, 'Max', '2018-08-20', 'Golden Retriever', 'Cão', 'Macho'),
-(4, 'AN-004', 4, 'Mia', '2020-10-30', 'Persa', 'Gato', 'Fêmea'),
-(5, 'AN-005', 5, 'Bob', '2017-12-12', 'Bulldog', 'Cão', 'Macho'),
-(6, 'AN-006', 6, 'Nina', '2019-04-18', 'Sphynx', 'Gato', 'Fêmea'),
-(7, 'AN-007', 7, 'Zeus', '2016-06-22', 'Boxer', 'Cão', 'Macho'),
-(8, 'AN-008', 8, 'Maggie', '2021-02-27', 'Beagle', 'Cão', 'Fêmea'),
-(9, 'AN-009', 9, 'Simba', '2018-11-19', 'Maine Coon', 'Gato', 'Macho'),
-(10, 'AN-010', 10, 'Chloe', '2017-03-05', 'Bengal', 'Gato', 'Fêmea'),
-(11, 'AN-011', 11, 'Duke', '2019-07-07', 'Doberman', 'Cão', 'Macho'),
-(12, 'AN-012', 12, 'Bella', '2018-09-12', 'Yorkshire', 'Cão', 'Fêmea'),
-(13, 'AN-013', 13, 'Thor', '2020-12-15', 'Pastor Alemão', 'Cão', 'Macho'),
-(14, 'AN-014', 14, 'Sasha', '2016-11-21', 'Rottweiler', 'Cão', 'Fêmea'),
-(15, 'AN-015', 15, 'Rocky', '2018-02-25', 'Shih Tzu', 'Cão', 'Macho'),
-(16, 'AN-016', 16, 'Lucy', '2019-03-29', 'Siamês', 'Gato', 'Fêmea'),
-(17, 'AN-017', 17, 'Oscar', '2017-08-08', 'Bulldog Francês', 'Cão', 'Macho'),
-(18, 'AN-018', 18, 'Lola', '2021-01-15', 'Chihuahua', 'Cão', 'Fêmea'),
-(19, 'AN-019', 19, 'Bruno', '2020-04-22', 'Pug', 'Cão', 'Macho'),
-(20, 'AN-020', 20, 'Maya', '2019-06-30', 'Scottish Fold', 'Gato', 'Fêmea'),
-(21, 'AN-021', 21, 'Jade', '2020-07-04', 'Golden Retriever', 'Cão', 'Fêmea'),
-(22, 'AN-022', 22, 'Sam', '2018-10-17', 'Akita', 'Cão', 'Macho'),
-(23, 'AN-023', 23, 'Nala', '2020-11-20', 'Siberiano', 'Gato', 'Fêmea'),
-(24, 'AN-024', 24, 'Leo', '2017-12-26', 'Bulldog Inglês', 'Cão', 'Macho');
+(1, 'AN-001', 4, 'Rex', '2020-01-01', 'Labrador', 'Cão', 'Macho'),
+(2, 'AN-002', 5, 'Luna', '2019-05-15', 'Poodle', 'Cão', 'Fêmea'),
+(3, 'AN-003', 6, 'Max', '2018-08-20', 'Golden Retriever', 'Cão', 'Macho'),
+(4, 'AN-004', 7, 'Mia', '2020-10-30', 'Persa', 'Gato', 'Fêmea'),
+(5, 'AN-005', 9, 'Bob', '2017-12-12', 'Bulldog', 'Cão', 'Macho'),
+(6, 'AN-006', 11, 'Nina', '2019-04-18', 'Sphynx', 'Gato', 'Fêmea'),
+(7, 'AN-007', 12, 'Zeus', '2016-06-22', 'Boxer', 'Cão', 'Macho'),
+(8, 'AN-008', 13, 'Maggie', '2021-02-27', 'Beagle', 'Cão', 'Fêmea'),
+(9, 'AN-009', 15, 'Simba', '2018-11-19', 'Maine Coon', 'Gato', 'Macho'),
+(10, 'AN-010', 16, 'Chloe', '2017-03-05', 'Bengal', 'Gato', 'Fêmea'),
+(11, 'AN-011', 18, 'Duke', '2019-07-07', 'Doberman', 'Cão', 'Macho'),
+(12, 'AN-012', 19, 'Bella', '2018-09-12', 'Yorkshire', 'Cão', 'Fêmea'),
+(13, 'AN-013', 21, 'Thor', '2020-12-15', 'Pastor Alemão', 'Cão', 'Macho'),
+(14, 'AN-014', 22, 'Sasha', '2016-11-21', 'Rottweiler', 'Cão', 'Fêmea'),
+(15, 'AN-015', 24, 'Rocky', '2018-02-25', 'Shih Tzu', 'Cão', 'Macho'),
+(16, 'AN-016', 25, 'Lucy', '2019-03-29', 'Siamês', 'Gato', 'Fêmea'),
+(17, 'AN-017', 26, 'Oscar', '2017-08-08', 'Bulldog Francês', 'Cão', 'Macho'),
+(18, 'AN-018', 28, 'Lola', '2021-01-15', 'Chihuahua', 'Cão', 'Fêmea'),
+(19, 'AN-019', 29, 'Bruno', '2020-04-22', 'Pug', 'Cão', 'Macho'),
+(20, 'AN-020', 31, 'Maya', '2019-06-30', 'Scottish Fold', 'Gato', 'Fêmea'),
+(21, 'AN-021', 32, 'Jade', '2020-07-04', 'Golden Retriever', 'Cão', 'Fêmea'),
+(22, 'AN-022', 34, 'Sam', '2018-10-17', 'Akita', 'Cão', 'Macho'),
+(23, 'AN-023', 35, 'Nala', '2020-11-20', 'Siberiano', 'Gato', 'Fêmea'),
+(24, 'AN-024', 36, 'Leo', '2017-12-26', 'Bulldog Inglês', 'Cão', 'Macho');
 
 -- Inserção na tabela Animal (25 registros)
 INSERT INTO Animal (idAnimal, registro, idPessoa, nome, dataNasc, raca, especie, sexo) VALUES
-(25, 'AN-025', 25, 'Juno', '2016-02-19', 'Poodle Toy', 'Cão', 'Fêmea'),
-(26, 'AN-026', 26, 'Toby', '2019-05-09', 'Weimaraner', 'Cão', 'Macho'),
-(27, 'AN-027', 27, 'Lily', '2021-03-01', 'Dachshund', 'Cão', 'Fêmea'),
-(28, 'AN-028', 28, 'Buddy', '2018-04-14', 'Lhasa Apso', 'Cão', 'Macho'),
-(29, 'AN-029', 29, 'Daisy', '2020-06-18', 'Bichon Frisé', 'Cão', 'Fêmea'),
-(30, 'AN-030', 30, 'Teddy', '2017-07-23', 'Pomeranian', 'Cão', 'Macho'),
-(31, 'AN-031', 31, 'Bailey', '2019-09-28', 'Border Collie', 'Cão', 'Macho'),
-(32, 'AN-032', 32, 'Ginger', '2018-01-03', 'Poodle Miniatura', 'Cão', 'Fêmea'),
-(33, 'AN-033', 33, 'Bentley', '2020-05-08', 'Buldogue Americano', 'Cão', 'Macho'),
-(34, 'AN-034', 34, 'Zara', '2017-08-15', 'Bengal', 'Gato', 'Fêmea'),
-(35, 'AN-035', 35, 'Charlie', '2016-11-27', 'Labradoodle', 'Cão', 'Macho'),
-(36, 'AN-036', 36, 'Ruby', '2018-03-12', 'Maltês', 'Cão', 'Fêmea'),
-(37, 'AN-037', 37, 'Harley', '2020-07-30', 'Terrier', 'Cão', 'Macho'),
-(38, 'AN-038', 38, 'Ella', '2019-01-17', 'Buldogue Francês', 'Cão', 'Fêmea'),
-(39, 'AN-039', 39, 'Jake', '2017-02-20', 'Dogue Alemão', 'Cão', 'Macho'),
+(25, 'AN-025', 38, 'Juno', '2016-02-19', 'Poodle Toy', 'Cão', 'Fêmea'),
+(26, 'AN-026', 39, 'Toby', '2019-05-09', 'Weimaraner', 'Cão', 'Macho'),
+(27, 'AN-027', 40, 'Lily', '2021-03-01', 'Dachshund', 'Cão', 'Fêmea'),
+(28, 'AN-028', 42, 'Buddy', '2018-04-14', 'Lhasa Apso', 'Cão', 'Macho'),
+(29, 'AN-029', 43, 'Daisy', '2020-06-18', 'Bichon Frisé', 'Cão', 'Fêmea'),
+(30, 'AN-030', 45, 'Teddy', '2017-07-23', 'Pomeranian', 'Cão', 'Macho'),
+(31, 'AN-031', 46, 'Bailey', '2019-09-28', 'Border Collie', 'Cão', 'Macho'),
+(32, 'AN-032', 47, 'Ginger', '2018-01-03', 'Poodle Miniatura', 'Cão', 'Fêmea'),
+(33, 'AN-033', 48, 'Bentley', '2020-05-08', 'Buldogue Americano', 'Cão', 'Macho'),
+(34, 'AN-034', 49, 'Zara', '2017-08-15', 'Bengal', 'Gato', 'Fêmea'),
+(35, 'AN-035', 50, 'Charlie', '2016-11-27', 'Labradoodle', 'Cão', 'Macho'),
+(36, 'AN-036', 31, 'Ruby', '2018-03-12', 'Maltês', 'Cão', 'Fêmea'),
+(37, 'AN-037', 32, 'Harley', '2020-07-30', 'Terrier', 'Cão', 'Macho'),
+(38, 'AN-038', 34, 'Ella', '2019-01-17', 'Buldogue Francês', 'Cão', 'Fêmea'),
+(39, 'AN-039', 35, 'Jake', '2017-02-20', 'Dogue Alemão', 'Cão', 'Macho'),
 (40, 'AN-040', 40, 'Sophie', '2021-04-05', 'Husky', 'Cão', 'Fêmea'),
-(41, 'AN-041', 41, 'Jasper', '2020-09-10', 'Dálmata', 'Cão', 'Macho'),
+(41, 'AN-041', 42, 'Jasper', '2020-09-10', 'Dálmata', 'Cão', 'Macho'),
 (42, 'AN-042', 42, 'Coco', '2018-12-14', 'Pastor Australiano', 'Cão', 'Fêmea'),
 (43, 'AN-043', 43, 'Bear', '2019-03-29', 'Bulldog Americano', 'Cão', 'Macho'),
-(44, 'AN-044', 44, 'Lulu', '2017-06-01', 'Schnauzer', 'Cão', 'Fêmea'),
-(45, 'AN-045', 45, 'Riley', '2016-08-03', 'Pit Bull', 'Cão', 'Macho'),
+(44, 'AN-044', 45, 'Lulu', '2017-06-01', 'Schnauzer', 'Cão', 'Fêmea'),
+(45, 'AN-045', 46, 'Riley', '2016-08-03', 'Pit Bull', 'Cão', 'Macho'),
 (46, 'AN-046', 46, 'Molly', '2018-10-20', 'Chow Chow', 'Cão', 'Fêmea'),
 (47, 'AN-047', 47, 'Otis', '2019-12-25', 'Shar Pei', 'Cão', 'Macho'),
 (48, 'AN-048', 48, 'Pepper', '2020-02-14', 'Whippet', 'Cão', 'Fêmea'),
@@ -319,56 +319,56 @@ INSERT INTO Consulta (idConsulta, dataConsulta, idAnimal, idPessoa, dataLimiteRe
 (1, '2024-01-01', 1, 1, '2024-01-15', NULL),
 (2, '2024-01-05', 2, 2, '2024-01-20', NULL),
 (3, '2024-01-10', 3, 3, '2024-01-25', NULL),
-(4, '2024-01-15', 4, 4, '2024-01-30', NULL),
-(5, '2024-01-20', 5, 5, '2024-02-05', NULL),
-(6, '2024-01-25', 6, 6, '2024-02-10', NULL),
-(7, '2024-01-30', 7, 7, '2024-02-15', NULL),
+(4, '2024-01-15', 4, 8, '2024-01-30', NULL),
+(5, '2024-01-20', 5, 1, '2024-02-05', NULL),
+(6, '2024-01-25', 6, 2, '2024-02-10', NULL),
+(7, '2024-01-30', 7, 3, '2024-02-15', NULL),
 (8, '2024-02-01', 8, 8, '2024-02-20', NULL),
-(9, '2024-02-05', 9, 9, '2024-02-25', NULL),
+(9, '2024-02-05', 9, 10, '2024-02-25', NULL),
 (10, '2024-02-10', 10, 10, '2024-03-01', NULL),
-(11, '2024-02-15', 11, 11, '2024-03-05', NULL),
-(12, '2024-02-20', 12, 12, '2024-03-10', NULL),
-(13, '2024-02-25', 13, 13, '2024-03-15', NULL),
-(14, '2024-03-01', 14, 14, '2024-03-20', NULL),
-(15, '2024-03-05', 15, 15, '2024-03-25', NULL),
-(16, '2024-03-10', 16, 16, '2024-04-01', NULL),
-(17, '2024-03-15', 17, 17, '2024-04-05', NULL),
-(18, '2024-03-20', 18, 18, '2024-04-10', NULL),
-(19, '2024-03-25', 19, 19, '2024-04-15', NULL),
+(11, '2024-02-15', 11, 14, '2024-03-05', NULL),
+(12, '2024-02-20', 12, 14, '2024-03-10', NULL),
+(13, '2024-02-25', 13, 17, '2024-03-15', NULL),
+(14, '2024-03-01', 14, 20, '2024-03-20', NULL),
+(15, '2024-03-05', 15, 20, '2024-03-25', NULL),
+(16, '2024-03-10', 16, 20, '2024-04-01', NULL),
+(17, '2024-03-15', 17, 23, '2024-04-05', NULL),
+(18, '2024-03-20', 18, 23, '2024-04-10', NULL),
+(19, '2024-03-25', 19, 23, '2024-04-15', NULL),
 (20, '2024-04-01', 20, 20, '2024-04-20', NULL),
-(21, '2024-04-05', 21, 21, '2024-04-25', NULL),
-(22, '2024-04-10', 22, 22, '2024-05-01', NULL),
-(23, '2024-04-15', 23, 23, '2024-05-05', NULL),
-(24, '2024-04-20', 24, 24, '2024-05-10', NULL);
+(21, '2024-04-05', 21, 27, '2024-04-25', NULL),
+(22, '2024-04-10', 22, 27, '2024-05-01', NULL),
+(23, '2024-04-15', 23, 27, '2024-05-05', NULL),
+(24, '2024-04-20', 24, 27, '2024-05-10', NULL);
 
 -- Inserção na tabela Consulta (25 registros)
 INSERT INTO Consulta (idConsulta, dataConsulta, idAnimal, idPessoa, dataLimiteRetorno, dataRealRetorno) VALUES
 (25, '2024-04-25', 25, 25, '2024-05-15', NULL),
-(26, '2024-05-01', 26, 26, '2024-05-20', NULL),
+(26, '2024-05-01', 26, 25, '2024-05-20', NULL),
 (27, '2024-05-05', 27, 27, '2024-05-25', NULL),
-(28, '2024-05-10', 28, 28, '2024-06-01', NULL),
-(29, '2024-05-15', 29, 29, '2024-06-05', NULL),
-(30, '2024-05-20', 30, 30, '2024-06-10', NULL),
-(31, '2024-05-25', 31, 31, '2024-06-15', NULL),
-(32, '2024-06-01', 32, 32, '2024-06-20', NULL),
+(28, '2024-05-10', 28, 30, '2024-06-01', NULL),
+(29, '2024-05-15', 29, 30, '2024-06-05', NULL),
+(30, '2024-05-20', 30, 49, '2024-06-10', NULL),
+(31, '2024-05-25', 31, 49, '2024-06-15', NULL),
+(32, '2024-06-01', 32, 33, '2024-06-20', NULL),
 (33, '2024-06-05', 33, 33, '2024-06-25', NULL),
-(34, '2024-06-10', 34, 34, '2024-07-01', NULL),
-(35, '2024-06-15', 35, 35, '2024-07-05', NULL),
-(36, '2024-06-20', 36, 36, '2024-07-10', NULL),
-(37, '2024-06-25', 37, 37, '2024-07-15', NULL),
-(38, '2024-07-01', 38, 38, '2024-07-20', NULL),
-(39, '2024-07-05', 39, 39, '2024-07-25', NULL),
-(40, '2024-07-10', 40, 40, '2024-08-01', NULL),
+(34, '2024-06-10', 34, 37, '2024-07-01', NULL),
+(35, '2024-06-15', 35, 33, '2024-07-05', NULL),
+(36, '2024-06-20', 36, 33, '2024-07-10', NULL),
+(37, '2024-06-25', 37, 33, '2024-07-15', NULL),
+(38, '2024-07-01', 38, 33, '2024-07-20', NULL),
+(39, '2024-07-05', 39, 37, '2024-07-25', NULL),
+(40, '2024-07-10', 40, 41, '2024-08-01', NULL),
 (41, '2024-07-15', 41, 41, '2024-08-05', NULL),
-(42, '2024-07-20', 42, 42, '2024-08-10', NULL),
-(43, '2024-07-25', 43, 43, '2024-08-15', NULL),
+(42, '2024-07-20', 42, 44, '2024-08-10', NULL),
+(43, '2024-07-25', 43, 44, '2024-08-15', NULL),
 (44, '2024-08-01', 44, 44, '2024-08-20', NULL),
-(45, '2024-08-05', 45, 45, '2024-08-25', NULL),
-(46, '2024-08-10', 46, 46, '2024-09-01', NULL),
-(47, '2024-08-15', 47, 47, '2024-09-05', NULL),
-(48, '2024-08-20', 48, 48, '2024-09-10', NULL),
-(49, '2024-08-25', 49, 49, '2024-09-15', NULL),
-(50, '2024-08-30', 50, 50, '2024-09-20', NULL);
+(45, '2024-08-05', 45, 41, '2024-08-25', NULL),
+(46, '2024-08-10', 46, 41, '2024-09-01', NULL),
+(47, '2024-08-15', 47, 41, '2024-09-05', NULL),
+(48, '2024-08-20', 48, 41, '2024-09-10', NULL),
+(49, '2024-08-25', 49, 41, '2024-09-15', NULL),
+(50, '2024-08-30', 50, 1, '2024-09-20', NULL);
 
 -- Inserção na tabela Medicamento (25 registros)
 INSERT INTO Medicamento (idMedicamento, registro, descricao) VALUES
@@ -594,43 +594,84 @@ INSERT INTO Consulta_Solicita (idConsulta, idExame, resultado) VALUES
 (49, 49, 'Aldosterona normal'),
 (50, 50, 'Função adrenal elevada');
 
--- (d) Exemplos de modificação de dados em 5 tabelas
--- Atualizando dados na tabela Pessoa
-UPDATE Pessoa SET nome = 'Dr. João da Silva' WHERE idPessoa = 1;
+-- D para baixo (necessário ALTERAÇÃO) 
+-- (d) Exemplos de modificação de dados em 5 tabelas, uma delas sendo um exemplo de UPDATE aninhado.
 
--- Atualizando dados na tabela Contatos
-UPDATE Contatos SET telefone = '21987654322' WHERE idContatos = 2;
+-- Ajusta o nome e bairro em Pessoa.
+UPDATE Pessoa
+SET nome = 'Ana Paula Souza', bairro = 'Jardim das Flores'
+WHERE CPF = '000.111.222-33';
 
--- Atualizando dados na tabela Animal
-UPDATE Animal SET raca = 'Golden Retriever' WHERE idAnimal = 1;
+-- Ajusta o nome e raça em Animal.
+UPDATE Animal
+SET nome = 'Salem', raca = 'vira-lata preto'
+WHERE idPessoa = (SELECT idPessoa FROM Pessoa WHERE nome = 'José Silva');
 
--- Atualizando dados na tabela Consulta
-UPDATE Consulta SET dataRealRetorno = '2023-07-18' WHERE idConsulta = 1;
+-- Ajusta o nome, raça e espécie em Animal.
+UPDATE Animal
+SET nome = 'Thor', raca = 'Persa', especie = 'Gato'
+WHERE registro = 'AN-001';
 
--- Atualizando dados na tabela Medicamento
-UPDATE Medicamento SET descricao = 'Antibiótico de amplo espectro' WHERE idMedicamento = 1;
+-- Ajusta a data de retorno em Consulta.
+UPDATE Consulta
+SET dataRealRetorno = '2024-08-15 10:00:00'
+WHERE idConsulta = 5;
 
--- UPDATE aninhado 
-UPDATE Pessoa p1
-JOIN Pessoa p2 ON p2.idPessoa = 2
-SET p1.bairro = p2.bairro
-WHERE p1.idPessoa = 1;
+-- Exemplo de UPDATE aninhado
+-- Ajusta o tutor do animal em Animal.
+SET SQL_SAFE_UPDATES = 0;
 
--- (e) Exemplos de exclusão de dados em 5 tabelas SER MAIS CRIATIVA NAS EXCLUSÕES
--- Deletando dados na tabela Consulta_Prescreve
-DELETE FROM Consulta_Prescreve WHERE idConsulta = 2;
+UPDATE Animal a
+SET idPessoa = (
+    SELECT idPessoa
+    FROM Pessoa p
+    WHERE p.nome = 'Patrícia Sousa'
+)
+WHERE a.nome = 'Zeus';
 
--- Deletando dados na tabela Consulta_Solicita
-DELETE FROM Consulta_Solicita WHERE idConsulta = 2;
+SET SQL_SAFE_UPDATES = 1;
 
--- Deletando dados na tabela Consulta
-DELETE FROM Consulta WHERE idConsulta = 2;
+-- UPDATE Animal a
+-- JOIN Pessoa p ON p.nome = 'Patrícia Sousa'
+-- SET a.idPessoa = p.idPessoa
+-- WHERE a.nome = 'Zeus';
 
--- Deletando dados na tabela Animal
-DELETE FROM Animal WHERE idAnimal = 2;
 
--- Deletando dados na tabela Medicamento
-DELETE FROM Medicamento WHERE idMedicamento = 2;
+-- (e) Exemplos de exclusão de dados em 5 tabelas, uma delas sendo um exemplo de DELETE aninhado.
+
+-- Deletando dados na tabela Pessoa.
+DELETE FROM Consulta
+WHERE idPessoa = (SELECT idPessoa FROM Pessoa WHERE CPF = '111.222.333-44');
+
+
+-- Deletando dados na tabela Animal.
+DELETE FROM Animal
+WHERE registro = 'AN-001';
+
+-- Deletando dados na tabela Consulta, caso a data limite de retorno ja tenha sido alcançada.
+-- Desativar o modo seguro
+SET SQL_SAFE_UPDATES = 0;
+
+-- Executar a consulta
+DELETE FROM Consulta
+WHERE dataRealRetorno IS NULL
+  AND dataLimiteRetorno < NOW();
+
+-- Reativar o modo seguro
+SET SQL_SAFE_UPDATES = 1;
+
+-- Deletando dados na tabela Animal.
+DELETE FROM Animal
+WHERE idAnimal = 2;
+
+-- Deletando dados na tabela Exame, exemplo de DELETE aninhado.
+DELETE FROM Exame
+WHERE idExame IN (
+    SELECT cs.idExame
+    FROM Consulta_Solicita cs
+    LEFT JOIN Consulta c ON cs.idConsulta = c.idConsulta
+    WHERE c.idConsulta IS NULL
+);
 
 -- (f) Exemplos de consultas complexas
 -- Consulta simples
@@ -666,8 +707,241 @@ SELECT * FROM Consulta WHERE dataRealRetorno IS NULL;
 SELECT COUNT(*) AS total_consultas FROM Consulta WHERE idPessoa = 1;
 
 -- Consulta aninhada
-SELECT nome FROM Pessoa WHERE idPessoa = (SELECT idPessoa FROM Animal WHERE nome = 'Rex');
+SELECT nome 
+FROM Pessoa 
+WHERE idPessoa = (SELECT idPessoa FROM Animal WHERE nome = 'Rex');
 
 -- Consulta com GROUP BY e HAVING
 SELECT cidade, COUNT(*) AS total FROM Pessoa GROUP BY cidade HAVING total > 1;
 
+
+-- (g) Exemplos de Criação de 3 Visões (Views)
+-- 1. Visão: View_Animal_Consulta
+CREATE VIEW View_Animal_Consulta AS
+SELECT 
+    a.nome AS NomeAnimal,
+    a.raca AS Raca,
+    a.especie AS Especie,
+    c.dataConsulta AS DataConsulta,
+    c.dataLimiteRetorno AS DataLimiteRetorno,
+    p.nome AS NomeVeterinario
+FROM 
+    Animal a
+JOIN 
+    Consulta c ON a.idAnimal = c.idAnimal
+JOIN 
+    Pessoa p ON c.idPessoa = p.idPessoa
+WHERE 
+    p.tipo = 'Veterinario';
+-- Como Usar:
+SELECT * FROM View_Animal_Consulta;
+
+-- 2. Visão: View_Contato_Pessoa
+CREATE VIEW View_Contato_Pessoa AS
+SELECT 
+    p.nome AS NomePessoa,
+    p.tipo AS TipoPessoa,
+    c.telefone AS Telefone,
+    c.email AS Email
+FROM 
+    Pessoa p
+JOIN 
+    Contatos c ON p.idPessoa = c.idPessoa;
+-- Como Usar:
+SELECT * FROM View_Contato_Pessoa WHERE TipoPessoa = 'Tutor';
+
+-- 3. Visão: View_Consulta_Prescricao
+CREATE VIEW View_Consulta_Prescricao AS
+SELECT 
+    p.nome AS NomeVeterinario,
+    a.nome AS NomeAnimal,
+    m.descricao AS Medicamento,
+    cp.dosagem AS Dosagem,
+    c.dataConsulta AS DataConsulta
+FROM 
+    Consulta c
+JOIN 
+    Pessoa p ON c.idPessoa = p.idPessoa
+JOIN 
+    Animal a ON c.idAnimal = a.idAnimal
+JOIN 
+    Consulta_Prescreve cp ON c.idConsulta = cp.idConsulta
+JOIN 
+    Medicamento m ON cp.idMedicamento = m.idMedicamento;
+-- Como Usar:
+SELECT * FROM View_Consulta_Prescricao WHERE NomeVeterinario = 'Dr. José';
+
+-- ========================================
+-- TESTAR
+-- ========================================
+-- (h) Exemplos de Criação de Usuários, Concessão (GRANT) e Revogação (REVOKE) de Permissão de Acesso
+-- 1. Criação de Usuários
+
+CREATE USER 'usuario_vet'@'localhost' IDENTIFIED BY 'senha123';
+CREATE USER 'usuario_admin'@'localhost' IDENTIFIED BY 'admin123';
+
+-- 2. Concessão de Permissões
+GRANT SELECT, INSERT, UPDATE ON ClinicaVeterinaria.* TO 'usuario_vet'@'localhost';
+GRANT ALL PRIVILEGES ON ClinicaVeterinaria.* TO 'usuario_admin'@'localhost';
+
+-- 3. Revogação de Permissões
+REVOKE UPDATE ON ClinicaVeterinaria.* FROM 'usuario_vet'@'localhost';
+-- ==========================================
+-- ==========================================
+
+-- (i) Exemplos de 3 Procedimentos/Funções
+-- 1. Procedimento Sem Parâmetros
+-- Primeiro, certifique-se de estar usando o banco de dados correto
+USE clinicaveterinaria;
+-- Defina o delimitador para evitar conflitos com o ponto e vírgula no código
+DELIMITER //
+-- Crie o procedimento
+CREATE PROCEDURE ListarVeterinarios()
+BEGIN
+    SELECT nome FROM Pessoa WHERE tipo = 'Veterinario';
+END //
+-- Restaure o delimitador para o padrão
+DELIMITER ;
+
+--  Como Usar:
+CALL ListarVeterinarios();
+
+-- 2. Procedimento Com Parâmetro de Entrada
+-- Primeiro, certifique-se de estar usando o banco de dados correto
+USE clinicaveterinaria;
+-- Defina o delimitador para evitar conflitos com o ponto e vírgula no código
+DELIMITER //
+-- Crie o procedimento
+CREATE PROCEDURE ListarConsultasAnimal(IN animalNome VARCHAR(100))
+BEGIN
+    SELECT c.dataConsulta, p.nome AS Veterinario
+    FROM Consulta c
+    JOIN Animal a ON c.idAnimal = a.idAnimal
+    JOIN Pessoa p ON c.idPessoa = p.idPessoa
+    WHERE a.nome = animalNome;
+END //
+
+-- Restaure o delimitador para o padrão
+DELIMITER ;
+
+-- Como Usar:
+CALL ListarConsultasAnimal('Thor');
+
+-- ========================================
+-- TESTAR
+-- ========================================
+-- 3. Função Com Parâmetro de Entrada e Saída
+DELIMITER //
+
+CREATE FUNCTION CalcularIdadeAnimal(animalId INT) 
+RETURNS INT
+DETERMINISTIC
+READS SQL DATA
+BEGIN
+    DECLARE idade INT;
+    DECLARE dataNasc DATE;
+
+    -- Obter a data de nascimento do animal
+    SELECT dataNasc INTO dataNasc
+    FROM Animal
+    WHERE idAnimal = animalId;
+
+    -- Calcular a idade com base na data de nascimento
+    SET idade = YEAR(CURDATE()) - YEAR(dataNasc);
+
+    -- Corrigir a idade se o animal ainda não fez aniversário este ano
+    IF MONTH(CURDATE()) < MONTH(dataNasc) OR 
+       (MONTH(CURDATE()) = MONTH(dataNasc) AND DAY(CURDATE()) < DAY(dataNasc)) THEN
+        SET idade = idade - 1;
+    END IF;
+
+    RETURN idade;
+END //
+
+DELIMITER ;
+-- ==========================================================
+
+
+-- (j) Exemplos de 3 Triggers
+-- 1. Trigger Para Inserção
+-- Este trigger insere automaticamente um contato padrão ao criar uma nova pessoa.
+
+DELIMITER //
+
+CREATE TRIGGER InserirContatoPadrao AFTER INSERT ON Pessoa
+FOR EACH ROW
+BEGIN
+    INSERT INTO Contatos (telefone, email, idPessoa) 
+    VALUES ('0000-0000', 'sememail@dominio.com', NEW.idPessoa);
+END //
+
+DELIMITER ;
+-- Como Disparar:
+
+INSERT INTO Pessoa (CRMV, CPF, nome, bairro, numero, cidade, estado, rua, complemento, tipo)
+VALUES ('', '12345678900', 'Novo Tutor', 'Centro', 10, 'Lisboa', 'PT', 'Rua A', '', 'Tutor');
+-- 2. Trigger Para Alteração
+-- Este trigger atualiza a data de retorno real ao alterar uma consulta.
+
+DELIMITER //
+
+CREATE TRIGGER AtualizarDataRetorno BEFORE UPDATE ON Consulta
+FOR EACH ROW
+BEGIN
+    IF NEW.dataRealRetorno IS NOT NULL THEN
+        SET NEW.dataLimiteRetorno = NEW.dataRealRetorno + INTERVAL 30 DAY;
+    END IF;
+END //
+
+DELIMITER ;
+-- Como Disparar:
+UPDATE Consulta SET dataRealRetorno = '2024-08-14' WHERE idConsulta = 1;
+-- 3. Trigger Para Exclusão
+-- Este trigger registra a exclusão de um animal em uma tabela de log.
+
+DELIMITER //
+
+CREATE TRIGGER LogExclusaoAnimal AFTER DELETE ON Animal
+FOR EACH ROW
+BEGIN
+    INSERT INTO LogExclusoes (descricao, dataHora) 
+    VALUES (CONCAT('Animal ', OLD.nome, ' excluído.'), NOW());
+END //
+
+DELIMITER ;
+-- Como Disparar:
+DELETE FROM Animal WHERE idAnimal = 1;
+
+-- PARA A ALTERNATIVA J EXISTE UM TRIGGER MUITO ÚTIL
+-- NA HORA DE GARANTIR Q A DATA LIMITE DE RETORNO 
+-- À CONSULTA SEJA DE ATÉ 30 DIAS (para update e inserção), interessante utilizar
+
+-- Trigger para garantir que dataLimiteRetorno seja até 30 dias após dataConsulta
+DELIMITER //
+
+CREATE TRIGGER trg_check_dataLimiteRetorno
+BEFORE INSERT ON Consulta
+FOR EACH ROW
+BEGIN
+    IF NEW.dataLimiteRetorno > DATE_ADD(NEW.dataConsulta, INTERVAL 30 DAY) THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'dataLimiteRetorno deve ser até 30 dias após dataConsulta';
+    END IF;
+END//
+
+DELIMITER ;
+
+-- Trigger para garantir que dataLimiteRetorno seja até 30 dias após dataConsulta em UPDATE
+DELIMITER //
+
+CREATE TRIGGER trg_check_dataLimiteRetorno_update
+BEFORE UPDATE ON Consulta
+FOR EACH ROW
+BEGIN
+    IF NEW.dataLimiteRetorno > DATE_ADD(NEW.dataConsulta, INTERVAL 30 DAY) THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'dataLimiteRetorno deve ser até 30 dias após dataConsulta';
+    END IF;
+END//
+
+DELIMITER ;
