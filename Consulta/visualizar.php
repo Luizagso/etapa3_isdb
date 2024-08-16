@@ -35,7 +35,7 @@ $conn->close();
 
         <?php if ($consulta): ?>
         <table border="1">
-            <tr>
+            <tr hidden>
                 <th>ID da Consulta</th>
                 <td><?php echo $consulta['idConsulta']; ?></td>
             </tr>

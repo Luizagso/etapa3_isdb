@@ -33,7 +33,7 @@
     <button><a href="create.php">Adicionar Nova Pessoa</a></button>
     <table border="1">
         <tr>
-            <th>ID</th>
+            <th hidden>Número</th>
             <th>Nome</th>
             <th>CPF</th>
             <th>CRMV</th>
@@ -50,7 +50,7 @@
         if ($result->num_rows > 0) {
             while($row = $result->fetch_assoc()) {
                 echo "<tr>";
-                echo "<td>" . $row["idPessoa"]. "</td>";
+                echo "<td hidden>" . $row["idPessoa"]. "</td>";
                 echo "<td>" . $row["nome"]. "</td>";
                 echo "<td>" . $row["CPF"]. "</td>";
                 echo "<td>" . $row["CRMV"]. "</td>";

@@ -22,8 +22,8 @@ CREATE TABLE IF NOT EXISTS Pessoa (
 -- Criação da tabela Contatos
 CREATE TABLE IF NOT EXISTS Contatos (
     idContato INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    telefone VARCHAR(19) NOT NULL,
-    email VARCHAR(50) UNIQUE NOT NULL,
+    telefone VARCHAR(19),
+    email VARCHAR(50) UNIQUE,
     idPessoa INT NOT NULL,
     CONSTRAINT fk_Contatos_Pessoa
         FOREIGN KEY (idPessoa)
@@ -631,12 +631,6 @@ WHERE a.nome = 'Zeus';
 
 SET SQL_SAFE_UPDATES = 1;
 
--- UPDATE Animal a
--- JOIN Pessoa p ON p.nome = 'Patrícia Sousa'
--- SET a.idPessoa = p.idPessoa
--- WHERE a.nome = 'Zeus';
-
-
 -- (e) Exemplos de exclusão de dados em 5 tabelas, uma delas sendo um exemplo de DELETE aninhado.
 
 -- Deletando dados na tabela Pessoa.
@@ -860,7 +854,6 @@ END //
 
 DELIMITER ;
 -- ==========================================================
-
 
 -- (j) Exemplos de 3 Triggers
 -- 1. Trigger Para Inserção

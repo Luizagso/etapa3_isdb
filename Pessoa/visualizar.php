@@ -34,7 +34,7 @@
 
         <?php if ($pessoa): ?>
         <table border="1">
-            <tr>
+            <tr hidden>
                 <th>ID da Pessoa</th>
                 <td><?php echo $pessoa['idPessoa']; ?></td>
             </tr>
@@ -46,10 +46,16 @@
                 <th>CPF</th>
                 <td><?php echo $pessoa['CPF']; ?></td>
             </tr>
-            <tr>
-                <th>CRMV</th>
-                <td><?php echo $pessoa['CRMV']; ?></td>
-            </tr>
+            <?php
+                if($pessoa['tipo'] != 'Tutor'){
+            ?>
+                <tr>
+                    <th>CRMV</th>
+                    <td><?php echo $pessoa['CRMV']; ?></td>
+                </tr>
+            <?php
+                }
+            ?>
             <tr>
                 <th>Bairro</th>
                 <td><?php echo $pessoa['bairro']; ?></td>

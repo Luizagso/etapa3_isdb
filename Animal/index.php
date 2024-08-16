@@ -36,7 +36,7 @@
     <button><a href="create.php">Adicionar Novo Animal</a></button>
     <table border="1">
         <tr>
-            <th>ID</th>
+            <th hidden>ID</th>
             <th>Registro</th>
             <th>Nome</th>
             <th>Nascimento</th>
@@ -54,7 +54,7 @@
                 $dataNasc = date('d/m/Y', strtotime($row["dataNasc"]));
 
                 echo "<tr>";
-                echo "<td>" . $row["idAnimal"]. "</td>";
+                echo "<td hidden>" . $row["idAnimal"]. "</td>";
                 echo "<td>" . $row["registro"]. "</td>";
                 echo "<td>" . $row["nome"]. "</td>";
                 echo "<td>" . $dataNasc. "</td>";

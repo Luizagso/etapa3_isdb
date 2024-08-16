@@ -39,7 +39,7 @@
     <button><a href="create.php">Adicionar Nova Consulta</a></button>
     <table border="1">
         <tr>
-            <th>ID</th>
+            <th hidden>ID</th>
             <th>Animal</th>
             <th>Tutor</th>
             <th>Data da Consulta</th>
@@ -62,7 +62,7 @@
                     $dataLimiteRetorno = date('d/m/Y', strtotime($row["dataLimiteRetorno"]));
 
                     echo "<tr>";
-                    echo "<td>" . $row["idConsulta"] . "</td>";
+                    echo "<td hidden>" . $row["idConsulta"] . "</td>";
                     echo "<td>" . $row["animal_nome"] . "</td>";
                     echo "<td>" . $row["tutor_nome"] . "</td>";
                     echo "<td>" . $dataConsulta . "</td>";
