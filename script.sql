@@ -133,31 +133,6 @@ CREATE TABLE IF NOT EXISTS Consulta_Solicita (
         ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
--- (b) Exemplos de ALTER TABLE e DROP TABLE
-
--- Adicionando uma nova coluna na tabela Pessoa
-ALTER TABLE Pessoa 
-ADD COLUMN telefone VARCHAR(15);
-
--- Removendo a coluna da tabela Pessoa
-ALTER TABLE Pessoa 
-DROP COLUMN telefone;
-
--- Modificando o tipo de dados da coluna CRMV na tabela Pessoa
-ALTER TABLE Pessoa 
-MODIFY COLUMN CRMV VARCHAR(25);
-
-
-
--- Criação de uma tabela extra para exemplificação
-CREATE TABLE Extra (
-    idExtra INT AUTO_INCREMENT PRIMARY KEY,
-    descricao VARCHAR(100) NOT NULL
-);
-
--- Removendo a tabela extra criada
-DROP TABLE Extra;
-
 
 -- (b) Exemplos de ALTER TABLE e DROP TABLE
 
