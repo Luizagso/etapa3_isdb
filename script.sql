@@ -1092,7 +1092,6 @@ BEGIN
     DECLARE idade INT;
     -- Calcula a diferença em anos entre a data de nascimento e a data atual.
     SET idade = TIMESTAMPDIFF(YEAR, dataNasc, CURDATE());
-    
     RETURN idade;
 END$$
 DELIMITER ;
@@ -1166,6 +1165,12 @@ UPDATE Consulta SET dataRealRetorno = '2024-08-14' WHERE idConsulta = 1;
 
 -- 3. Trigger Para Exclusão
 -- Este trigger registra a exclusão de um animal em uma tabela de log.
+CREATE TABLE LogExclusoes (
+    idLog INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    descricao VARCHAR(255) NOT NULL,
+    dataHora DATETIME NOT NULL
+);
+
 DELIMITER //
 CREATE TRIGGER LogExclusaoAnimal AFTER DELETE ON Animal
 FOR EACH ROW
@@ -1179,16 +1184,18 @@ DELIMITER ;
 -- Exclua um animal para acionar o trigger e registrar a exclusão no log.
 DELETE FROM Animal WHERE idAnimal = 1;
 
--- Trigger para garantir que dataLimiteRetorno seja até 30 dias após dataConsulta durante a inserção.
+-- 4. Trigger para garantir que dataLimiteRetorno seja até 30 dias após dataConsulta durante a inserção.
 DELIMITER //
 CREATE TRIGGER trg_check_dataLimiteRetorno
 BEFORE INSERT ON Consulta
 FOR EACH ROW
 BEGIN
-    -- Verifica se a data limite de retorno não ultrapassa 30 dias após a data da consulta.
-    IF NEW.dataLimiteRetorno > DATE_ADD(NEW.dataConsulta, INTERVAL 30 DAY) THEN
-        SIGNAL SQLSTATE '45000'
-        SET MESSAGE_TEXT = 'dataLimiteRetorno deve ser até 30 dias após dataConsulta';
+    -- Verifica se a dataLimiteRetorno não é nula e se não ultrapassa 30 dias após a data da consulta
+    IF NEW.dataLimiteRetorno IS NOT NULL AND NEW.dataConsulta IS NOT NULL THEN
+        IF NEW.dataLimiteRetorno > DATE_ADD(NEW.dataConsulta, INTERVAL 30 DAY) THEN
+            SIGNAL SQLSTATE '45000'
+            SET MESSAGE_TEXT = 'dataLimiteRetorno deve ser até 30 dias após dataConsulta';
+        END IF;
     END IF;
 END//
 DELIMITER ;
