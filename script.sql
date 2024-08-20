@@ -2,13 +2,14 @@
 
 -- Criação do banco de dados
 CREATE DATABASE IF NOT EXISTS ClinicaVeterinaria DEFAULT CHARACTER SET utf8 ;
+-- Define que as próximas operações serão realizadas no banco de dados ClinicaVeterinaria
 USE ClinicaVeterinaria ;
 
--- Criação da tabela Pessoa 
+-- Criação da tabela Pessoa: Armazena informações sobre pessoas que podem ser veterinários, tutores de animais ou ambos.
 CREATE TABLE IF NOT EXISTS Pessoa (
     idPessoa INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    CRMV VARCHAR(20) UNIQUE NULL,
-    CPF VARCHAR(14) UNIQUE NOT NULL,
+    CRMV VARCHAR(20) NULL,
+    CPF VARCHAR(14) NOT NULL,
     nome VARCHAR(60) NOT NULL,
     bairro VARCHAR(60) NOT NULL,
     numero INT NOT NULL,
@@ -16,40 +17,45 @@ CREATE TABLE IF NOT EXISTS Pessoa (
     estado VARCHAR(60) NOT NULL,
     rua VARCHAR(60) NOT NULL,
     complemento VARCHAR(10) NULL,
-    tipo ENUM('Veterinario', 'Tutor', 'Ambos') NOT NULL DEFAULT 'Tutor'
-);
+    tipo ENUM('Veterinario', 'Tutor', 'Ambos') NOT NULL DEFAULT 'Tutor',
+    UNIQUE INDEX CRMV_UNIQUE (CRMV ASC) VISIBLE,
+    UNIQUE INDEX CPF_UNIQUE (CPF ASC) VISIBLE)
+ENGINE = InnoDB;
 
--- Criação da tabela Contatos
+-- Criação da tabela Contatos: Vinculado à tabela Pessoa, armazena os contato(telefone e e-mail) das pessoas.
 CREATE TABLE IF NOT EXISTS Contatos (
     idContato INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     telefone VARCHAR(19),
-    email VARCHAR(50) UNIQUE,
+    email VARCHAR(50),
     idPessoa INT NOT NULL,
+    INDEX fk_Contatos_Pessoa_idx (idPessoa ASC) VISIBLE,
+    UNIQUE INDEX email_UNIQUE (email ASC) VISIBLE,
     CONSTRAINT fk_Contatos_Pessoa
         FOREIGN KEY (idPessoa)
         REFERENCES Pessoa (idPessoa)
         ON DELETE CASCADE
-        ON UPDATE CASCADE
-);
+        ON UPDATE CASCADE)
+ENGINE = InnoDB;
 
--- Criação da tabela Animal
+-- Criação da tabela Animal: Armazena informações sobre os animais, vinculados aos seus respectivos tutores na tabela Pessoa.
 CREATE TABLE IF NOT EXISTS Animal (
     idAnimal INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
     idPessoa INT NOT NULL,
-    registro VARCHAR(20) UNIQUE NOT NULL,
+    registro VARCHAR(20) NOT NULL,
     dataNasc DATE NOT NULL,
     nome VARCHAR(60) NOT NULL,
     raca VARCHAR(60) NOT NULL,
     especie VARCHAR(60) NOT NULL,
     sexo ENUM('Macho', 'Fêmea') NOT NULL DEFAULT 'Macho',
+    UNIQUE INDEX registro_UNIQUE (registro ASC) VISIBLE,
     CONSTRAINT fk_Animal_Pessoa
         FOREIGN KEY (idPessoa)
         REFERENCES Pessoa (idPessoa)
         ON DELETE RESTRICT
-        ON UPDATE CASCADE
-);
+        ON UPDATE CASCADE)
+ENGINE = InnoDB;
 
--- Criação da tabela Consulta
+-- Criação da tabela Consulta: Armazena os dados das consultas realizadas para os animais, vinculando o animal e a pessoa responsável (veterinário ou tutor).
 CREATE TABLE IF NOT EXISTS Consulta (
     idConsulta INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
     idAnimal INT NOT NULL,
@@ -57,7 +63,9 @@ CREATE TABLE IF NOT EXISTS Consulta (
     idPessoa INT NOT NULL,
     dataRealRetorno DATETIME NULL,
     dataLimiteRetorno DATE NOT NULL,
-    UNIQUE KEY (dataConsulta, idAnimal),
+    INDEX fk_Consulta_Animal_idx (idAnimal ASC) VISIBLE,
+    INDEX fk_Consulta_Pessoa_idx (idPessoa ASC) VISIBLE,
+    INDEX uq_consulta (dataConsulta ASC, idAnimal ASC) VISIBLE,
     CONSTRAINT fk_Consulta_Animal
         FOREIGN KEY (idAnimal)
         REFERENCES Animal (idAnimal)
@@ -67,29 +75,31 @@ CREATE TABLE IF NOT EXISTS Consulta (
         FOREIGN KEY (idPessoa)
         REFERENCES Pessoa (idPessoa)
         ON DELETE RESTRICT
-        ON UPDATE CASCADE
-);
+        ON UPDATE CASCADE)
+ENGINE = InnoDB;
 
--- Criação da tabela Medicamento
+-- Criação da tabela Medicamento: Armazena informações sobre os medicamentos disponíveis para prescrição.
 CREATE TABLE IF NOT EXISTS Medicamento (
     idMedicamento INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     registro VARCHAR(20) UNIQUE NOT NULL,
-    descricao VARCHAR(60) NOT NULL DEFAULT 'Sem descrição'
-);
+    descricao VARCHAR(60) NOT NULL DEFAULT 'Sem descrição')
+ENGINE = InnoDB;
 
--- Criação da tabela Exame
+-- Criação da tabela Exame: Armazena informações sobre os exames disponíveis para solicitação.
 CREATE TABLE IF NOT EXISTS Exame (
     idExame INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     registro VARCHAR(20) UNIQUE NOT NULL,
-    descricao VARCHAR(60) NOT NULL DEFAULT 'Sem descrição'
-);
+    descricao VARCHAR(60) NOT NULL DEFAULT 'Sem descrição')
+ENGINE = InnoDB;
 
--- Criação da tabela Consulta_Prescreve
+-- Criação da tabela Consulta_Prescreve: Armazena a relação entre consultas e medicamentos prescritos, vinculando os dois e armazenando a dosagem.
 CREATE TABLE IF NOT EXISTS Consulta_prescreve (
     idMedicamento INT NOT NULL,
     idConsulta INT NOT NULL,
     dosagem VARCHAR(60) NOT NULL,
     PRIMARY KEY (idMedicamento, idConsulta),
+    INDEX fk_Medicamento_has_Consulta_Consulta_idx (idConsulta ASC) VISIBLE,
+    INDEX fk_Medicamento_has_Consulta_Medicamento_idx (idMedicamento ASC) VISIBLE,
     CONSTRAINT fk_prescreve_medicamento
         FOREIGN KEY (idMedicamento)
         REFERENCES Medicamento (idMedicamento)
@@ -99,14 +109,16 @@ CREATE TABLE IF NOT EXISTS Consulta_prescreve (
         FOREIGN KEY (idConsulta)
         REFERENCES Consulta (idConsulta)
         ON DELETE CASCADE
-        ON UPDATE CASCADE
-);
+        ON UPDATE CASCADE)
+ENGINE = InnoDB;
 
--- Criação da tabela Consulta_Solicita
+-- Criação da tabela Consulta_Solicita: Armazena a relação entre consultas e exames solicitados, vinculando os dois e armazenando o resultado do exame.
 CREATE TABLE IF NOT EXISTS Consulta_Solicita (
     idConsulta INT NOT NULL,
     idExame INT NOT NULL,
     resultado VARCHAR(60) NULL DEFAULT 'Pendente',
+    INDEX fk_Consulta_has_Exame_Exame_idx (idExame ASC) VISIBLE,
+    INDEX fk_Consulta_has_Exame_Consulta_idx (idConsulta ASC) VISIBLE,
     PRIMARY KEY (idConsulta, idExame),
     CONSTRAINT fk_solicita_consulta
         FOREIGN KEY (idConsulta)
@@ -117,8 +129,8 @@ CREATE TABLE IF NOT EXISTS Consulta_Solicita (
         FOREIGN KEY (idExame)
         REFERENCES Exame (idExame)
         ON DELETE CASCADE
-        ON UPDATE CASCADE
-);
+        ON UPDATE CASCADE)
+ENGINE = InnoDB;
 
 -- (b) Exemplos de ALTER TABLE e DROP TABLE
 
@@ -134,9 +146,7 @@ DROP COLUMN telefone;
 ALTER TABLE Pessoa 
 MODIFY COLUMN CRMV VARCHAR(25);
 
--- Adicionando uma restrição UNIQUE na coluna email da tabela Contatos
-ALTER TABLE Contatos 
-ADD UNIQUE (email);
+
 
 -- Criação de uma tabela extra para exemplificação
 CREATE TABLE Extra (
@@ -146,6 +156,39 @@ CREATE TABLE Extra (
 
 -- Removendo a tabela extra criada
 DROP TABLE Extra;
+
+
+-- (b) Exemplos de ALTER TABLE e DROP TABLE
+
+-- Adicionando uma nova coluna na tabela Pessoa: Insere a coluna 'telefone' para armazenar números de telefone.
+ALTER TABLE Pessoa ADD COLUMN telefone VARCHAR(15);
+
+-- Removendo a coluna da tabela Pessoa: Exclui a coluna 'telefone' da tabela Pessoa.
+ALTER TABLE Pessoa DROP COLUMN telefone;
+
+-- Modificando o tipo de dados da coluna CRMV na tabela Pessoa: Altera o tipo de dados da coluna 'CRMV' para comportar um tamanho maior.
+ALTER TABLE Pessoa MODIFY COLUMN CRMV VARCHAR(25);
+
+-- Adicionando uma nova coluna na tabela Exame: Insere a coluna 'complexidade' para armazenar informações a respeito do nível de dificuldade do exame.
+ALTER TABLE Exame 
+ADD COLUMN complexidade VARCHAR(60);
+
+-- Adicionando uma restrição UNIQUE na coluna 'complexidade' da tabela Exame: Garante que os valores na coluna 'complexidade' sejam únicos em toda a tabela.
+ALTER TABLE Exame ADD UNIQUE (complexidade);
+
+-- Removendo a coluna da tabela Exame
+ALTER TABLE Exame 
+DROP COLUMN complexidade;
+
+-- Criação de uma tabela extra para exemplificação: Cria uma tabela 'Extra' para demonstrar a remoção de uma tabela.
+CREATE TABLE Extra (
+    idExtra INT AUTO_INCREMENT PRIMARY KEY,
+    descricao VARCHAR(100) NOT NULL
+);
+
+-- Removendo a tabela extra criada: Exclui a tabela 'Extra' do banco de dados.
+DROP TABLE Extra;
+
 
 -- (c) Inserção de dados em cada uma das tabelas
 USE ClinicaVeterinaria;
@@ -178,7 +221,7 @@ INSERT INTO Pessoa (idPessoa, CRMV, CPF, nome, bairro, numero, cidade, estado, r
 (24, NULL, '144.255.366-88', 'Luciana Matos', 'Campo Grande', 18, 'Lisboa', 'LI', 'Rua X', '', 'Tutor'),
 (25, NULL, '155.266.377-99', 'Diego Rocha', 'Centro', 20, 'Faro', 'FA', 'Rua Y', 'Casa 6', 'Tutor');
 
--- Inserção na tabela Pessoa (25 registros)
+-- Inserção na tabela Pessoa (28 registros)
 INSERT INTO Pessoa (idPessoa, CRMV, CPF, nome, bairro, numero, cidade, estado, rua, complemento, tipo) VALUES
 (26, NULL, '166.277.388-00', 'Simone Mendes', 'Vila Nova', 22, 'Braga', 'BR', 'Rua Z', '', 'Tutor'),
 (27, '789024-SP', '177.288.399-11', 'Fábio Sousa', 'Jardim Botânico', 24, 'Coimbra', 'CB', 'Rua AA', '', 'Veterinario'),
@@ -204,9 +247,12 @@ INSERT INTO Pessoa (idPessoa, CRMV, CPF, nome, bairro, numero, cidade, estado, r
 (47, NULL, '377.488.599-11', 'Sérgio Almeida', 'Campanhã', 64, 'Porto', 'PT', 'Rua UU', '', 'Tutor'),
 (48, NULL, '388.499.600-22', 'Thais Rodrigues', 'Baixa', 66, 'Lisboa', 'LI', 'Rua VV', '', 'Tutor'),
 (49, '901248-SP', '399.500.611-33', 'Eduardo Moreira', 'Centro', 68, 'Faro', 'FA', 'Rua WW', 'Apto 904', 'Ambos'),
-(50, NULL, '399.540.611-33', 'Luiza Silva', 'Betânia', 68, 'Belo Horizonte', 'MG', 'Rua WW', 'Apto 904', 'Tutor');
+(50, NULL, '399.540.611-33', 'Luiza Silva', 'Betânia', 68, 'Belo Horizonte', 'MG', 'Rua WW', 'Apto 904', 'Tutor'),
+(51, null, '111.925.333-44', 'Adrian Toomes', 'Centro', 10, 'Lisboa', 'LI', 'Rua A', '', 'tutor'),
+(52, null, '222.863.444-55', 'Curt Connors', 'Bairro Alto', 23, 'Lisboa', 'LI', 'Rua B', '', 'tutor'),
+(53, null, '333.201.555-66', 'Quentin Beck', 'Bela Vista', 45, 'Porto', 'PT', 'Rua C', '', 'tutor');
 
--- Inserção na tabela Contatos (25 registros)
+-- Inserção na tabela Contatos (24 registros)
 INSERT INTO Contatos (idContato, telefone, email, idPessoa) VALUES
 (1, '911111111', 'joao.silva@exemplo.com', 1),
 (2, '922222222', 'maria.oliveira@exemplo.com', 2),
@@ -287,11 +333,11 @@ INSERT INTO Animal (idAnimal, registro, idPessoa, nome, dataNasc, raca, especie,
 (21, 'AN-021', 32, 'Jade', '2020-07-04', 'Golden Retriever', 'Cão', 'Fêmea'),
 (22, 'AN-022', 34, 'Sam', '2018-10-17', 'Akita', 'Cão', 'Macho'),
 (23, 'AN-023', 35, 'Nala', '2020-11-20', 'Siberiano', 'Gato', 'Fêmea'),
-(24, 'AN-024', 36, 'Leo', '2017-12-26', 'Bulldog Inglês', 'Cão', 'Macho');
+(24, 'AN-024', 36, 'Leo', '2017-12-26', 'Bulldog Inglês', 'Cão', 'Macho'),
+(25, 'AN-025', 38, 'Juno', '2016-02-19', 'Poodle Toy', 'Cão', 'Fêmea');
 
--- Inserção na tabela Animal (25 registros)
+-- Inserção na tabela Animal (32 registros)
 INSERT INTO Animal (idAnimal, registro, idPessoa, nome, dataNasc, raca, especie, sexo) VALUES
-(25, 'AN-025', 38, 'Juno', '2016-02-19', 'Poodle Toy', 'Cão', 'Fêmea'),
 (26, 'AN-026', 39, 'Toby', '2019-05-09', 'Weimaraner', 'Cão', 'Macho'),
 (27, 'AN-027', 40, 'Lily', '2021-03-01', 'Dachshund', 'Cão', 'Fêmea'),
 (28, 'AN-028', 42, 'Buddy', '2018-04-14', 'Lhasa Apso', 'Cão', 'Macho'),
@@ -316,17 +362,25 @@ INSERT INTO Animal (idAnimal, registro, idPessoa, nome, dataNasc, raca, especie,
 (47, 'AN-047', 47, 'Otis', '2019-12-25', 'Shar Pei', 'Cão', 'Macho'),
 (48, 'AN-048', 48, 'Pepper', '2020-02-14', 'Whippet', 'Cão', 'Fêmea'),
 (49, 'AN-049', 49, 'Sparky', '2017-09-12', 'Galgo', 'Cão', 'Macho'),
-(50, 'AN-050', 49, 'Juju', '2020-01-01', 'Labrador', 'Cão', 'Macho');
+(50, 'AN-050', 49, 'Juju', '2020-01-01', 'Labrador', 'Cão', 'Macho'),
+(51, 'AN-051', 4, 'Fumaça', '2020-01-01', 'Labrador', 'Cão', 'Macho'),
+(52, 'AN-052', 5, 'Fofinha', '2019-05-15', 'Poodle', 'Cão', 'Fêmea'),
+(53, 'AN-059', 4, 'Lulu', '2020-01-01', 'SRD', 'Porquinho da India', 'Macho'),
+(54, 'AN-054', 5, 'Luna', '2019-05-15', 'SRD', 'Coelho', 'Fêmea'),
+(55, 'AN-055', 6, 'Max', '2018-08-20', ' SRD', 'Coelho', 'Macho'),
+(56, 'AN-056', 7, 'Mia', '2020-10-30', 'SRD', 'Hamster', 'Fêmea'),
+(57, 'AN-057', 9, 'Bob', '2017-12-12', 'SRD', 'Hamster', 'Macho'),
+(58, 'AN-058', 11, 'Nina', '2019-04-18', 'SRD', 'Coelho', 'Fêmea');
 
 -- Inserção na tabela Consulta (25 registros)
 INSERT INTO Consulta (idConsulta, dataConsulta, idAnimal, idPessoa, dataLimiteRetorno, dataRealRetorno) VALUES
-(1, '2024-01-01', 1, 41, '2024-01-15', NULL),
-(2, '2024-01-05', 2, 41, '2024-01-20', NULL),
+(1, '2024-01-01', 3, 1, '2024-01-15', NULL),
+(2, '2024-01-05', 3, 2, '2024-01-20', NULL),
 (3, '2024-01-10', 3, 3, '2024-01-25', NULL),
 (4, '2024-01-15', 4, 8, '2024-01-30', NULL),
 (5, '2024-01-20', 5, 1, '2024-02-05', NULL),
 (6, '2024-01-25', 6, 2, '2024-02-10', NULL),
-(7, '2024-01-30', 7, 3, '2024-02-15', NULL),
+(7, '2024-01-30', 7, 7, '2024-02-15', NULL),
 (8, '2024-02-01', 8, 8, '2024-02-20', NULL),
 (9, '2024-02-05', 9, 10, '2024-02-25', NULL),
 (10, '2024-02-10', 10, 10, '2024-03-01', NULL),
@@ -343,11 +397,11 @@ INSERT INTO Consulta (idConsulta, dataConsulta, idAnimal, idPessoa, dataLimiteRe
 (21, '2024-04-05', 21, 27, '2024-04-25', NULL),
 (22, '2024-04-10', 22, 27, '2024-05-01', NULL),
 (23, '2024-04-15', 23, 27, '2024-05-05', NULL),
-(24, '2024-04-20', 24, 27, '2024-05-10', NULL);
+(24, '2024-04-20', 24, 27, '2024-05-10', NULL),
+(25, '2024-04-25', 25, 25, '2024-05-15', NULL);
 
--- Inserção na tabela Consulta (25 registros)
+-- Inserção na tabela Consulta (26 registros)
 INSERT INTO Consulta (idConsulta, dataConsulta, idAnimal, idPessoa, dataLimiteRetorno, dataRealRetorno) VALUES
-(25, '2024-04-25', 25, 25, '2024-05-15', NULL),
 (26, '2024-05-01', 26, 25, '2024-05-20', NULL),
 (27, '2024-05-05', 27, 27, '2024-05-25', NULL),
 (28, '2024-05-10', 28, 30, '2024-06-01', NULL),
@@ -372,7 +426,9 @@ INSERT INTO Consulta (idConsulta, dataConsulta, idAnimal, idPessoa, dataLimiteRe
 (47, '2024-08-15', 47, 41, '2024-09-05', NULL),
 (48, '2024-08-20', 48, 41, '2024-09-10', NULL),
 (49, '2024-08-25', 49, 41, '2024-09-15', NULL),
-(50, '2024-08-30', 50, 1, '2024-09-20', NULL);
+(50, '2024-08-30', 50, 1, '2024-09-20', NULL),
+(51, '2022-01-05', 52, 2, '2023-01-08', NULL),
+(52, '2022-01-05', 51, 2, '2022-01-08', NULL);
 
 -- Inserção na tabela Medicamento (25 registros)
 INSERT INTO Medicamento (idMedicamento, registro, descricao) VALUES
@@ -399,11 +455,11 @@ INSERT INTO Medicamento (idMedicamento, registro, descricao) VALUES
 (21, 'MED-021', 'Comprimido para controle de convulsões'),
 (22, 'MED-022', 'Vacina contra leptospirose'),
 (23, 'MED-023', 'Suplemento alimentar para animais convalescentes'),
-(24, 'MED-024', 'Antidepressivo para animais com ansiedade');
+(24, 'MED-024', 'Antidepressivo para animais com ansiedade'),
+(25, 'MED-025', 'Antiparasitário de uso externo');
 
--- Inserção na tabela Medicamento (25 registros)
+-- Inserção na tabela Medicamento (26 registros)
 INSERT INTO Medicamento (idMedicamento, registro, descricao) VALUES
-(25, 'MED-025', 'Antiparasitário de uso externo'),
 (26, 'MED-026', 'Pomada para tratamento de otite'),
 (27, 'MED-027', 'Comprimido para prevenção de dirofilariose'),
 (28, 'MED-028', 'Antibiótico para infecções urinárias'),
@@ -428,7 +484,8 @@ INSERT INTO Medicamento (idMedicamento, registro, descricao) VALUES
 (47, 'MED-047', 'Antipulgas oral para cães'),
 (48, 'MED-048', 'Pomada para tratamento de eczema'),
 (49, 'MED-049', 'Comprimido para controle de dores crônicas'),
-(50, 'MED-050', 'Comprimido para tratamento de obesidade');
+(50, 'MED-050', 'Comprimido para tratamento de obesidade'),
+(51, 'MED-051', 'Ambroxol');
 
 -- Inserção na tabela Exame (25 registros)
 INSERT INTO Exame (idExame, registro, descricao) VALUES
@@ -514,7 +571,7 @@ INSERT INTO Consulta_Prescreve (idConsulta, idMedicamento, dosagem) VALUES
 (24, 24, '1 comprimido ao dia'),
 (25, 25, 'Aplicar 1x ao dia');
 
--- Inserção na tabela Consulta_Prescreve (25 registros)
+-- Inserção na tabela Consulta_Prescreve (29 registros)
 INSERT INTO Consulta_Prescreve (idConsulta, idMedicamento, dosagem) VALUES
 (26, 26, 'Aplicar 2x ao dia'),
 (27, 27, '1 comprimido ao mês'),
@@ -540,12 +597,16 @@ INSERT INTO Consulta_Prescreve (idConsulta, idMedicamento, dosagem) VALUES
 (47, 47, '1 comprimido ao mês'),
 (48, 48, 'Aplicar 2x ao dia'),
 (49, 49, '1 comprimido 2x ao dia'),
-(50, 50, '1 comprimido 2x ao dia');
+(50, 50, '1 comprimido 2x ao dia'),
+(51, 33, '1 vez ao ano'),
+(52, 33, 'dose anual'),
+(51, 51, '0.5 mg'),
+(52, 51, '5 mg');
 
 -- Inserção na tabela Consulta_Solicita (25 registros)
 INSERT INTO Consulta_Solicita (idConsulta, idExame, resultado) VALUES
 (1, 1, 'Normal'),
-(2, 2, 'Leve dilatação abdominal'),
+(1, 2, 'Leve dilatação abdominal'),
 (3, 3, 'Infiltrado pulmonar'),
 (4, 4, 'Creatinina elevada'),
 (5, 5, 'Ecocardiograma normal'),
@@ -570,7 +631,7 @@ INSERT INTO Consulta_Solicita (idConsulta, idExame, resultado) VALUES
 (24, 24, 'Sorologia negativa para dirofilariose'),
 (25, 25, 'Ácido úrico elevado');
 
--- Inserção na tabela Consulta_Solicita (50 registros)
+-- Inserção na tabela Consulta_Solicita (25 registros)
 INSERT INTO Consulta_Solicita (idConsulta, idExame, resultado) VALUES
 (26, 26, 'Função adrenal normal'),
 (27, 27, 'Função tireoidiana normal'),
@@ -598,30 +659,35 @@ INSERT INTO Consulta_Solicita (idConsulta, idExame, resultado) VALUES
 (49, 49, 'Aldosterona normal'),
 (50, 50, 'Função adrenal elevada');
 
+
 -- (d) Exemplos de modificação de dados em 5 tabelas, uma delas sendo um exemplo de UPDATE aninhado.
 
--- Ajusta o nome e bairro em Pessoa.
+-- Atualizando dados na tabela Pessoa
+-- Altera o nome e o bairro da pessoa com o CPF igual ao valor inserido.
 UPDATE Pessoa
 SET nome = 'Ana Paula Souza', bairro = 'Jardim das Flores'
 WHERE CPF = '000.111.222-33';
 
--- Ajusta o nome e raça em Animal.
+-- Atualizando dados na tabela Animal
+-- Ajusta o nome e raça do animal associado a uma pessoa específica.
 UPDATE Animal
 SET nome = 'Salem', raca = 'vira-lata preto'
 WHERE idPessoa = (SELECT idPessoa FROM Pessoa WHERE nome = 'José Silva');
 
--- Ajusta o nome, raça e espécie em Animal.
+-- Atualizando dados na tabela Animal (2º exemplo)
+-- Ajusta o nome, raça e espécie do animal com um registro específico.
 UPDATE Animal
 SET nome = 'Thor', raca = 'Persa', especie = 'Gato'
 WHERE registro = 'AN-001';
 
--- Ajusta a data de retorno em Consulta.
+-- Atualizando dados na tabela Consulta
+-- Ajusta a data de retorno em uma consulta específica.
 UPDATE Consulta
 SET dataRealRetorno = '2024-08-15 10:00:00'
 WHERE idConsulta = 5;
 
 -- Exemplo de UPDATE aninhado
--- Ajusta o tutor do animal em Animal.
+-- Ajusta o tutor do animal na tabela Animal utilizando uma subconsulta.
 SET SQL_SAFE_UPDATES = 0;
 
 UPDATE Animal a
@@ -634,51 +700,53 @@ WHERE a.nome = 'Zeus';
 
 SET SQL_SAFE_UPDATES = 1;
 
+
 -- (e) Exemplos de exclusão de dados em 5 tabelas, uma delas sendo um exemplo de DELETE aninhado.
 
--- Deletando dados na tabela Pessoa.
+-- Deletando dados na tabela Pessoa
+-- Remove uma consulta associada a uma pessoa com um CPF específico.
 DELETE FROM Consulta
 WHERE idPessoa = (SELECT idPessoa FROM Pessoa WHERE CPF = '111.222.333-44');
 
 
--- Deletando dados na tabela Animal.
+-- Deletando dados na tabela Animal
+-- Remove um registro específico de um animal com base em seu registro.
 DELETE FROM Animal
 WHERE registro = 'AN-001';
 
--- Deletando dados na tabela Consulta, caso a data limite de retorno ja tenha sido alcançada.
--- Desativar o modo seguro
+-- Deletando dados na tabela Consulta
+-- Remove consultas onde a data limite de retorno já foi alcançada e a data de retorno ainda não foi registrada.
+-- Desativa o modo seguro para permitir atualizações sem chave primária.
 SET SQL_SAFE_UPDATES = 0;
 
--- Executar a consulta
+-- Executa a exclusão dos registros que atendem às condições.
 DELETE FROM Consulta
-WHERE dataRealRetorno IS NULL
-  AND dataLimiteRetorno < NOW();
+WHERE dataRealRetorno < '2024-01-01'
+    OR dataLimiteRetorno < '2024-01-02';
 
--- Reativar o modo seguro
+-- Reativa o modo seguro para proteger contra atualizações sem chave primária.
 SET SQL_SAFE_UPDATES = 1;
 
-
--- Deletando dados na tabela Animal.
+-- Deletando dados na tabela Animal
+-- Remove um animal específico com base em seu ID.
 DELETE FROM Animal
 WHERE idAnimal = 2;
 
--- Deletando dados na tabela Exame, exemplo de DELETE aninhado.
-DELETE FROM Exame
-WHERE idExame IN (
-    SELECT cs.idExame
-    FROM Consulta_Solicita cs
-    LEFT JOIN Consulta c ON cs.idConsulta = c.idConsulta
-    WHERE c.idConsulta IS NULL
+-- Deletando dados na tabela Exame (Exemplo de DELETE aninhado)
+-- o comando exclui da consulata todos os registros cujos idAnimal são de animais
+-- da pessoa com CPF 144.255.366-88
+DELETE FROM Consulta
+WHERE idAnimal IN (
+    SELECT idAnimal FROM Animal
+    WHERE idPessoa = (SELECT idPessoa FROM Pessoa WHERE CPF = '144.255.366-88')
 );
-
 
 -- (f) Exemplos de consultas complexas
 -- F1
 -- Recupera os medicamentos e suas respectivas dosagens referentes à consulta realizada pelo animal de id 7 no dia 30 de janeiro de 2024.
-
 SELECT 
-    M.descricao AS medicamento, 
-    CP.dosagem AS dosagem
+    M.descricao AS Medicamento, 
+    CP.dosagem AS Dosagem
 FROM 
     Consulta C
 NATURAL JOIN 
@@ -691,20 +759,16 @@ WHERE
     
 -- F2
 -- Recupera a descrição do evento (consulta ou exame), a data e o id das consultas ou exames realizados entre 1º e 15 de agosto de 2024, ordenados da data mais recente para a mais antiga.
-
 SELECT idConsulta AS idEvento, dataConsulta AS dataEvento, 'Consulta' AS tipoEvento
 FROM Consulta
 WHERE dataConsulta BETWEEN '2024-08-01' AND '2024-08-15'
-
 UNION
-
 -- Seleciona todos os exames com a data e a descrição "Exame"
 SELECT idExame AS idEvento, dataConsulta AS dataEvento, 'Exame' AS tipoEvento
 FROM Exame
 NATURAL JOIN Consulta_Solicita
 NATURAL JOIN Consulta
 WHERE dataConsulta BETWEEN '2024-08-01' AND '2024-08-15'
-
 -- Ordena pela data do evento da mais próxima para a mais antiga
 ORDER BY dataEvento DESC;
 
@@ -727,14 +791,10 @@ GROUP BY P.nome
 HAVING COUNT(A.idAnimal) > 1;
 
 -- F5
--- Recupera os próximos animais que precisarão de reaplicação de dose, retornando o nome do tutor, 
--- seus números de telefone, o nome do animal, o medicamento prescrito, sua dosagem, a data da consulta e o 
--- ID da consulta em que a última dose anual foi prescrita há mais de 11 meses, ordenados da data mais distante para a mais próxima.
+-- Recupera os próximos animais que precisarão de reaplicação de dose, retornando o nome do tutor, seus números de telefone, o nome do animal, o medicamento prescrito, sua dosagem, a data da consulta e o ID da consulta em que a última dose anual foi prescrita há mais de 11 meses, ordenados da data mais distante para a mais próxima.
 -- Foram utilizados três operadores não vistos em sala: GROUP_CONCAT(), que concatena todos os telefones do tutor em uma única tupla
 -- date_sub(), usado para subtrair 11 meses da data atual
 -- curdate(), retorna a data atual
-
-
 SELECT 
     C.idConsulta AS IdConsulta, 
     A.nome AS NomeAnimal, 
@@ -742,7 +802,7 @@ SELECT
     CP.dosagem AS DosagemPrescrita,
     C.dataConsulta AS DataConsulta,   
     P.nome AS NomeTutor,
-    GROUP_CONCAT(Ct.telefone SEPARATOR ', ') AS Telefones
+    GROUP_CONCAT(Ct.telefone SEPARATOR ', ') AS Telefones 
 FROM 
     Consulta C
 JOIN 
@@ -756,23 +816,16 @@ JOIN
 LEFT JOIN 
     Contatos Ct ON P.idPessoa = Ct.idPessoa
 WHERE 
-    (CP.dosagem LIKE '%anual%' OR CP.dosagem LIKE '%1% %ano%' ) -- tratamento para encontrar doses anuais
-    AND (
-        C.dataConsulta <= DATE_SUB(CURDATE(), INTERVAL 11 MONTH)
-    )
+    (CP.dosagem LIKE '%anual%' OR CP.dosagem LIKE '%1% %ano%') -- tratamento para encontrar doses anuais
+    AND C.dataConsulta <= DATE_SUB(CURDATE(), INTERVAL 11 MONTH)
 GROUP BY 
-    C.idConsulta, 
-    A.nome, 
-    M.descricao, 
-    CP.dosagem, 
-    C.dataConsulta, 
-    P.nome
+    C.idConsulta, A.nome, M.descricao, CP.dosagem, C.dataConsulta, P.nome
 ORDER BY 
-    C.dataConsulta ASC
-LIMIT 0, 50000;
+    C.dataConsulta ASC;
+
 
 -- F6
--- Recupera as dosagens do medicamento 'Ambroxol' onde existe pelo menos uma dosagem maior que 4 ou menor que 1 registrada em qualquer consulta.
+-- Recupera as dosagens do medicamento 'Xarope expectorante para tosse' onde existe pelo menos uma dosagem maior que 4 ou menor que 1 registrada em qualquer consulta.
 SELECT 
     CP.dosagem AS DosagemPrescrita
 FROM 
@@ -780,10 +833,10 @@ FROM
 JOIN 
     Medicamento M ON CP.idMedicamento = M.idMedicamento
 WHERE 
-    M.descricao = 'Ambroxol' 
+    M.descricao = 'Xarope expectorante para tosse'
     AND (
         EXISTS (
-            SELECT 1
+            SELECT *
             FROM Consulta_prescreve CP_sub
             WHERE CP_sub.idMedicamento = M.idMedicamento
             AND (CP_sub.dosagem > 4 OR CP_sub.dosagem < 1)  -- Verifica se existe qualquer dosagem que atenda às condições
@@ -792,8 +845,7 @@ WHERE
     
 -- F7 
 -- Recupera o id da consulta, o nome do animal, a data da consulta, a data limite de retorno, o nome do tutor e os telefones do tutor onde a consulta ainda não teve retorno, ordenados da mais antiga para a mais nova.
-
-   SELECT 
+SELECT 
     C.idConsulta AS IdConsulta,
     A.nome AS NomeAnimal,
     C.dataConsulta AS DataConsulta,
@@ -811,13 +863,12 @@ LEFT JOIN
 WHERE 
     C.dataRealRetorno IS NULL  -- Verifica se a dataRealRetorno ainda não foi preenchida
 GROUP BY 
-    C.idConsulta, A.nome, C.dataConsulta, C.dataLimiteRetorno, P.nome
+    IdConsulta, NomeAnimal, DataConsulta, DataLimiteRetorno, NomeTutor
 ORDER BY 
     C.dataConsulta ASC;
     
 -- F8
 -- Recupera o nome de todos os veterinários que prescreveram medicamentos em todas as consultas nas quais participaram.
-
 SELECT nome
 FROM Pessoa p
 WHERE tipo = 'Veterinario'
@@ -827,9 +878,8 @@ WHERE tipo = 'Veterinario'
         JOIN Consulta_prescreve cp ON c.idConsulta = cp.idConsulta
         WHERE c.idPessoa = p.idPessoa
     );
-
     
--- f9
+-- F9
 -- Recupera o nome, espécie, data de nascimento e raça de todos os animais que sejam porquinho-da-índia, hamster ou coelho.
 SELECT nome, especie, raca, dataNasc
 FROM Animal
@@ -838,14 +888,13 @@ Order BY especie, nome;
 
 -- F10
 -- Recupera a dosagem, o nome do animal, a espécie, o id da consulta e o nome do veterinário onde a dosagem do medicamento Ambroxol foi superior a alguma dosagem aplicada pelo veterinário de id 3.
--- Neste exemplo, para facilitar a tratação de dados, estamos considerando que os registros do ambroxol sejam sempre feitos sempre no formato 'valor mg'
-
+-- Foi utilizada a função CAST para garantir a comparação entre as dosagens, a função está responsável por converter as strings em valores decimais
 SELECT 
-    CP.dosagem AS DosagemPrescrita,
-    A.nome AS NomeAnimal,
-    A.especie AS Especie,
-    C.idConsulta AS IdConsulta,
-    P.nome AS NomeVeterinario
+    CAST(CP.dosagem AS DECIMAL(10, 2)) DosagemPrescrita,
+    A.nome NomeAnimal,
+    A.especie Especie,
+    C.idConsulta IdConsulta,
+    P.nome NomeVeterinario
 FROM 
     Consulta_prescreve CP
 JOIN 
@@ -858,8 +907,8 @@ JOIN
     Pessoa P ON C.idPessoa = P.idPessoa
 WHERE 
     M.descricao = 'Ambroxol'
-    AND CP.dosagem > SOME (
-        SELECT CP2.dosagem
+    AND CAST(CP.dosagem AS DECIMAL(10, 2)) > SOME (
+        SELECT CAST(CP2.dosagem AS DECIMAL(10, 2))
         FROM Consulta_prescreve CP2
         JOIN Consulta C2 ON CP2.idConsulta = C2.idConsulta
         WHERE CP2.idMedicamento = M.idMedicamento
@@ -868,7 +917,6 @@ WHERE
     
 -- F11
 -- Recupera o id e o nome dos tutores que não possuem nenhum animal cadastrado na clínica.
-
 SELECT 
     P.idPessoa, 
     P.nome AS NomeTutor
@@ -884,7 +932,6 @@ WHERE
     
 -- F12
 -- Recupera o nome dos veterinários, a descrição dos exames e a quantidade de cada exame solicitado por veterinário.
-
 SELECT 
     P.nome AS NomeVeterinario,
     E.descricao AS DescricaoExame,
@@ -904,7 +951,7 @@ GROUP BY
 ORDER BY 
     P.nome, QuantidadeExamesSolicitados DESC;
     
--- f13
+-- F13
 -- Recupera o nome dos tutores ou ambos e a quantidade de animais que cada um possui, ordenados pela quantidade de animais em ordem decrescente.
 SELECT 
     P.nome AS NomeTutor,
@@ -918,8 +965,11 @@ GROUP BY
 ORDER BY 
     QuantidadeAnimais DESC;
 
+
 -- (g) Exemplos de Criação de 3 Visões (Views)
 -- 1. Visão: View_Animal_Consulta
+-- Esta visão combina informações sobre animais e suas respectivas consultas veterinárias.
+-- Inclui o nome, raça e espécie do animal, além da data da consulta, data limite de retorno e o nome do veterinário responsável.
 CREATE VIEW View_Animal_Consulta AS
 SELECT 
     a.nome AS NomeAnimal,
@@ -937,9 +987,12 @@ JOIN
 WHERE 
     p.tipo = 'Veterinario';
 -- Como Usar:
+-- Seleciona todos os registros da visão View_Animal_Consulta.
 SELECT * FROM View_Animal_Consulta;
 
 -- 2. Visão: View_Contato_Pessoa
+-- Esta visão combina informações sobre pessoas e seus contatos associados.
+-- Inclui o nome da pessoa, o tipo de pessoa (por exemplo, Tutor), telefone e e-mail.
 CREATE VIEW View_Contato_Pessoa AS
 SELECT 
     p.nome AS NomePessoa,
@@ -951,9 +1004,12 @@ FROM
 JOIN 
     Contatos c ON p.idPessoa = c.idPessoa;
 -- Como Usar:
+-- Seleciona todos os registros da visão View_Contato_Pessoa onde o tipo de pessoa é 'Tutor'.
 SELECT * FROM View_Contato_Pessoa WHERE TipoPessoa = 'Tutor';
 
 -- 3. Visão: View_Consulta_Prescricao
+-- Esta visão reúne informações sobre prescrições médicas durante consultas.
+-- Inclui o nome do veterinário, o nome do animal, a descrição do medicamento, dosagem prescrita e a data da consulta.
 CREATE VIEW View_Consulta_Prescricao AS
 SELECT 
     p.nome AS NomeVeterinario,
@@ -972,7 +1028,8 @@ JOIN
 JOIN 
     Medicamento m ON cp.idMedicamento = m.idMedicamento;
 -- Como Usar:
-SELECT * FROM View_Consulta_Prescricao WHERE NomeVeterinario = 'Dr. José';
+-- Seleciona todos os registros da visão View_Consulta_Prescricao onde o nome do veterinário é 'Vinícius Oliveira'.
+SELECT * FROM View_Consulta_Prescricao WHERE NomeVeterinario = 'Vinícius Oliveira';
 
 
 -- (h) Exemplos de Criação de Usuários, Concessão (GRANT) e Revogação (REVOKE) de Permissão de Acesso
@@ -996,24 +1053,23 @@ REVOKE ALL PRIVILEGES, GRANT OPTION FROM 'usuario_admin'@'localhost';
 -- Primeiro, certifique-se de estar usando o banco de dados correto
 USE clinicaveterinaria;
 
+-- 1. Procedimento Sem Parâmetros
+-- Este procedimento lista todos os veterinários registrados na tabela Pessoa.
 DELIMITER //
--- Crie o procedimento
 CREATE PROCEDURE ListarVeterinarios()
 BEGIN
     SELECT nome FROM Pessoa WHERE tipo = 'Veterinario';
 END //
 -- Restaure o delimitador para o padrão
 DELIMITER ;
-
---  Como Usar:
+-- Como Usar:
+-- Chame o procedimento para listar os veterinários.
 CALL ListarVeterinarios();
 
--- 3. Exemplo de Procedimento Sem Parâmetros de Saída
+-- 2. Exemplo de Procedimento Sem Parâmetros de Saída
 -- Neste exemplo, o procedimento listarConsultasDoAno simplesmente 
 -- lista todas as consultas de um determinado ano, sem precisar de parâmetros de saída.
-
 DELIMITER $$
-
 CREATE PROCEDURE listarConsultasDoAno(
     IN p_ano INT
 )
@@ -1022,33 +1078,34 @@ BEGIN
     FROM Consulta
     WHERE YEAR(dataConsulta) = p_ano;
 END$$
-
 DELIMITER ;
+-- Como Usar:
+-- Chame o procedimento passando o ano desejado como parâmetro.
 CALL listarConsultasDoAno(2024);
 
--- Função para calcular a idade de um animal a partir da data de nascimento (com parâmetros de entrada e saída)
-
+-- 3. Função para Calcular a Idade de um Animal
+-- Esta função calcula a idade de um animal com base na sua data de nascimento.
+-- (com parâmetros de entrada e saída)
 DELIMITER $$
-
 CREATE FUNCTION calcularIdade(dataNasc DATE) 
 RETURNS INT
 DETERMINISTIC
 BEGIN
     DECLARE idade INT;
-    
+    -- Calcula a diferença em anos entre a data de nascimento e a data atual.
     SET idade = TIMESTAMPDIFF(YEAR, dataNasc, CURDATE());
     
     RETURN idade;
 END$$
-
 DELIMITER ;
--- Como Usar
+-- Como Usar:
+-- Use a função para calcular a idade de um animal fornecendo sua data de nascimento.
 SELECT calcularIdade('2018-08-20');
 
--- 2. Procedimento para atualizar a dosagem de um medicamento prescrito (com parâmetros de entrada)
-
+-- 4. Procedimento para Atualizar a Dosagem de um Medicamento Prescrito
+-- Este procedimento atualiza a dosagem de um medicamento prescrito em uma consulta específica.
+-- (com parâmetros de entrada)
 DELIMITER $$
-
 CREATE PROCEDURE atualizarDosagem(
     IN p_idConsulta INT, 
     IN p_idMedicamento INT, 
@@ -1056,107 +1113,84 @@ CREATE PROCEDURE atualizarDosagem(
 )
 BEGIN
     DECLARE dosagemAtual VARCHAR(60);
-    
+    -- Busca a dosagem atual do medicamento prescrito.
     SELECT dosagem INTO dosagemAtual
     FROM Consulta_prescreve
     WHERE idConsulta = p_idConsulta AND idMedicamento = p_idMedicamento;
-    
+    -- Se a dosagem atual for encontrada, ela é atualizada.
     IF dosagemAtual IS NOT NULL THEN
         UPDATE Consulta_prescreve
         SET dosagem = novaDosagem
         WHERE idConsulta = p_idConsulta AND idMedicamento = p_idMedicamento;
     ELSE
+        -- Caso contrário, um erro é lançado.
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Medicamento não encontrado para esta consulta.';
     END IF;
 END$$
-
 DELIMITER ;
--- Como Usar
-CALL atualizarDosagem(44, 44, '500mg 2x ao dia');
+-- Como Usar:
+-- Chame o procedimento para atualizar a dosagem de um medicamento específico em uma consulta.
+CALL atualizarDosagem(45, 45, '500mg 2x ao dia');
 
 
 -- (j) Exemplos de 3 Triggers
 -- 1. Trigger Para Inserção
--- Este trigger insere automaticamente um contato padrão ao criar uma nova pessoa.
-
+-- Este trigger insere automaticamente um contato padrão quando uma nova pessoa é criada na tabela Pessoa.
 DELIMITER //
-
 CREATE TRIGGER InserirContatoPadrao AFTER INSERT ON Pessoa
 FOR EACH ROW
 BEGIN
+    -- Insere um contato padrão para a nova pessoa adicionada.
     INSERT INTO Contatos (telefone, email, idPessoa) 
     VALUES ('0000-111', 'semeil@dominio.com', NEW.idPessoa);
 END //
-
 DELIMITER ;
 -- Como Disparar:
-
+-- Insira uma nova pessoa para acionar o trigger e adicionar automaticamente o contato padrão.
 INSERT INTO Pessoa (CRMV, CPF, nome, bairro, numero, cidade, estado, rua, complemento, tipo)
 VALUES ('0 ', '13345678900', 'Novo Tutor', 'Centro', 10, 'Lisboa', 'PT', 'Rua A', '', 'Tutor');
+
 -- 2. Trigger Para Alteração
--- Este trigger atualiza a data de retorno real ao alterar uma consulta.
-
+-- Este trigger atualiza automaticamente a data limite de retorno ao modificar a data real de retorno em uma consulta.
 DELIMITER //
-
 CREATE TRIGGER AtualizarDataRetorno BEFORE UPDATE ON Consulta
 FOR EACH ROW
 BEGIN
+    -- Se a data real de retorno for alterada, a data limite de retorno é ajustada para 30 dias após a nova data.
     IF NEW.dataRealRetorno IS NOT NULL THEN
         SET NEW.dataLimiteRetorno = NEW.dataRealRetorno + INTERVAL 30 DAY;
     END IF;
 END //
-
 DELIMITER ;
 -- Como Disparar:
+-- Atualize a data real de retorno de uma consulta para acionar o trigger.
 UPDATE Consulta SET dataRealRetorno = '2024-08-14' WHERE idConsulta = 1;
+
 -- 3. Trigger Para Exclusão
 -- Este trigger registra a exclusão de um animal em uma tabela de log.
-
 DELIMITER //
-
 CREATE TRIGGER LogExclusaoAnimal AFTER DELETE ON Animal
 FOR EACH ROW
 BEGIN
+    -- Insere um registro de log com a descrição e a data/hora da exclusão do animal.
     INSERT INTO LogExclusoes (descricao, dataHora) 
     VALUES (CONCAT('Animal ', OLD.nome, ' excluído.'), NOW());
 END //
-
 DELIMITER ;
 -- Como Disparar:
+-- Exclua um animal para acionar o trigger e registrar a exclusão no log.
 DELETE FROM Animal WHERE idAnimal = 1;
 
-
--- PARA A ALTERNATIVA J EXISTE UM TRIGGER MUITO ÚTIL
--- NA HORA DE GARANTIR Q A DATA LIMITE DE RETORNO 
--- À CONSULTA SEJA DE ATÉ 30 DIAS (para update e inserção), interessante utilizar
-
-
--- Trigger para garantir que dataLimiteRetorno seja até 30 dias após dataConsulta
+-- Trigger para garantir que dataLimiteRetorno seja até 30 dias após dataConsulta durante a inserção.
 DELIMITER //
-
 CREATE TRIGGER trg_check_dataLimiteRetorno
 BEFORE INSERT ON Consulta
 FOR EACH ROW
 BEGIN
+    -- Verifica se a data limite de retorno não ultrapassa 30 dias após a data da consulta.
     IF NEW.dataLimiteRetorno > DATE_ADD(NEW.dataConsulta, INTERVAL 30 DAY) THEN
         SIGNAL SQLSTATE '45000'
         SET MESSAGE_TEXT = 'dataLimiteRetorno deve ser até 30 dias após dataConsulta';
     END IF;
 END//
-
-DELIMITER ;
-
--- Trigger para garantir que dataLimiteRetorno seja até 30 dias após dataConsulta em UPDATE
-DELIMITER //
-
-CREATE TRIGGER trg_check_dataLimiteRetorno_update
-BEFORE UPDATE ON Consulta
-FOR EACH ROW
-BEGIN
-    IF NEW.dataLimiteRetorno > DATE_ADD(NEW.dataConsulta, INTERVAL 30 DAY) THEN
-        SIGNAL SQLSTATE '45000'
-        SET MESSAGE_TEXT = 'dataLimiteRetorno deve ser até 30 dias após dataConsulta';
-    END IF;
-END//
-
 DELIMITER ;
