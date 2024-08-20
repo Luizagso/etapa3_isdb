@@ -123,16 +123,20 @@ CREATE TABLE IF NOT EXISTS Consulta_Solicita (
 -- (b) Exemplos de ALTER TABLE e DROP TABLE
 
 -- Adicionando uma nova coluna na tabela Pessoa
-ALTER TABLE Pessoa ADD COLUMN telefone VARCHAR(15);
+ALTER TABLE Pessoa 
+ADD COLUMN telefone VARCHAR(15);
 
 -- Removendo a coluna da tabela Pessoa
-ALTER TABLE Pessoa DROP COLUMN telefone;
+ALTER TABLE Pessoa 
+DROP COLUMN telefone;
 
 -- Modificando o tipo de dados da coluna CRMV na tabela Pessoa
-ALTER TABLE Pessoa MODIFY COLUMN CRMV VARCHAR(25);
+ALTER TABLE Pessoa 
+MODIFY COLUMN CRMV VARCHAR(25);
 
 -- Adicionando uma restrição UNIQUE na coluna email da tabela Contatos
-ALTER TABLE Contatos ADD UNIQUE (email);
+ALTER TABLE Contatos 
+ADD UNIQUE (email);
 
 -- Criação de uma tabela extra para exemplificação
 CREATE TABLE Extra (
@@ -316,8 +320,8 @@ INSERT INTO Animal (idAnimal, registro, idPessoa, nome, dataNasc, raca, especie,
 
 -- Inserção na tabela Consulta (25 registros)
 INSERT INTO Consulta (idConsulta, dataConsulta, idAnimal, idPessoa, dataLimiteRetorno, dataRealRetorno) VALUES
-(1, '2024-01-01', 1, 1, '2024-01-15', NULL),
-(2, '2024-01-05', 2, 2, '2024-01-20', NULL),
+(1, '2024-01-01', 1, 41, '2024-01-15', NULL),
+(2, '2024-01-05', 2, 41, '2024-01-20', NULL),
 (3, '2024-01-10', 3, 3, '2024-01-25', NULL),
 (4, '2024-01-15', 4, 8, '2024-01-30', NULL),
 (5, '2024-01-20', 5, 1, '2024-02-05', NULL),
@@ -594,7 +598,6 @@ INSERT INTO Consulta_Solicita (idConsulta, idExame, resultado) VALUES
 (49, 49, 'Aldosterona normal'),
 (50, 50, 'Função adrenal elevada');
 
--- D para baixo (necessário ALTERAÇÃO) 
 -- (d) Exemplos de modificação de dados em 5 tabelas, uma delas sendo um exemplo de UPDATE aninhado.
 
 -- Ajusta o nome e bairro em Pessoa.
@@ -654,6 +657,7 @@ WHERE dataRealRetorno IS NULL
 -- Reativar o modo seguro
 SET SQL_SAFE_UPDATES = 1;
 
+
 -- Deletando dados na tabela Animal.
 DELETE FROM Animal
 WHERE idAnimal = 2;
@@ -667,47 +671,252 @@ WHERE idExame IN (
     WHERE c.idConsulta IS NULL
 );
 
+
 -- (f) Exemplos de consultas complexas
--- Consulta simples
-SELECT * FROM Pessoa;
+-- F1
+-- Recupera os medicamentos e suas respectivas dosagens referentes à consulta realizada pelo animal de id 7 no dia 30 de janeiro de 2024.
 
--- Consulta com JOIN
-SELECT p.nome, c.telefone FROM Pessoa p JOIN Contatos c ON p.idPessoa = c.idPessoa;
+SELECT 
+    M.descricao AS medicamento, 
+    CP.dosagem AS dosagem
+FROM 
+    Consulta C
+NATURAL JOIN 
+    Consulta_prescreve CP
+NATURAL JOIN 
+    Medicamento M
+WHERE 
+    C.dataConsulta = '2024-01-30'
+    AND C.idAnimal = 7;
+    
+-- F2
+-- Recupera a descrição do evento (consulta ou exame), a data e o id das consultas ou exames realizados entre 1º e 15 de agosto de 2024, ordenados da data mais recente para a mais antiga.
 
--- Consulta com OUTER JOIN
-SELECT p.nome, a.nome AS animal FROM Pessoa p LEFT JOIN Animal a ON p.idPessoa = a.idPessoa;
+SELECT idConsulta AS idEvento, dataConsulta AS dataEvento, 'Consulta' AS tipoEvento
+FROM Consulta
+WHERE dataConsulta BETWEEN '2024-08-01' AND '2024-08-15'
 
--- Consulta com UNION
-SELECT nome FROM Pessoa WHERE tipo = 'Veterinario'
 UNION
-SELECT nome FROM Animal;
 
--- Consulta com AND e OR
-SELECT * FROM Animal WHERE especie = 'Cachorro' AND (sexo = 'Masculino' OR raca = 'Golden Retriever');
+-- Seleciona todos os exames com a data e a descrição "Exame"
+SELECT idExame AS idEvento, dataConsulta AS dataEvento, 'Exame' AS tipoEvento
+FROM Exame
+NATURAL JOIN Consulta_Solicita
+NATURAL JOIN Consulta
+WHERE dataConsulta BETWEEN '2024-08-01' AND '2024-08-15'
 
--- Consulta com BETWEEN
-SELECT * FROM Consulta WHERE dataConsulta BETWEEN '2023-07-01' AND '2023-07-31';
+-- Ordena pela data do evento da mais próxima para a mais antiga
+ORDER BY dataEvento DESC;
 
--- Consulta com IN
-SELECT * FROM Pessoa WHERE cidade IN ('São Paulo', 'Rio de Janeiro');
+-- F3
+-- Recupera o nome e a quantidade de consultas realizadas por cada veterinário no mês de agosto de 2024.
+SELECT P.nome AS NomeVeterinario, COUNT(C.idConsulta) AS NumeroConsultas
+FROM Consulta C
+JOIN Pessoa P ON C.idPessoa = P.idPessoa
+WHERE P.tipo IN ('Veterinário', 'Ambos')
+AND MONTH(C.dataConsulta) = 8 AND YEAR(C.dataConsulta) = 2024
+GROUP BY P.nome;
 
--- Consulta com LIKE
-SELECT * FROM Pessoa WHERE nome LIKE 'Dr.%';
+-- F4
+-- Recupera o nome dos tutores e a quantidade de animais que cada um possui, desde que o tutor tenha mais de um animal.
+SELECT P.nome AS NomeTutor, COUNT(A.idAnimal) AS QuantidadeAnimais
+FROM Pessoa P
+JOIN Animal A ON P.idPessoa = A.idPessoa
+WHERE P.tipo IN ('Tutor', 'Ambos')
+GROUP BY P.nome
+HAVING COUNT(A.idAnimal) > 1;
 
--- Consulta com IS NULL
-SELECT * FROM Consulta WHERE dataRealRetorno IS NULL;
+-- F5
+-- Recupera os próximos animais que precisarão de reaplicação de dose, retornando o nome do tutor, 
+-- seus números de telefone, o nome do animal, o medicamento prescrito, sua dosagem, a data da consulta e o 
+-- ID da consulta em que a última dose anual foi prescrita há mais de 11 meses, ordenados da data mais distante para a mais próxima.
+-- Foram utilizados três operadores não vistos em sala: GROUP_CONCAT(), que concatena todos os telefones do tutor em uma única tupla
+-- date_sub(), usado para subtrair 11 meses da data atual
+-- curdate(), retorna a data atual
 
--- Consulta com funções agregadas
-SELECT COUNT(*) AS total_consultas FROM Consulta WHERE idPessoa = 1;
 
--- Consulta aninhada
-SELECT nome 
-FROM Pessoa 
-WHERE idPessoa = (SELECT idPessoa FROM Animal WHERE nome = 'Rex');
+SELECT 
+    C.idConsulta AS IdConsulta, 
+    A.nome AS NomeAnimal, 
+    M.descricao AS Medicamento, 
+    CP.dosagem AS DosagemPrescrita,
+    C.dataConsulta AS DataConsulta,   
+    P.nome AS NomeTutor,
+    GROUP_CONCAT(Ct.telefone SEPARATOR ', ') AS Telefones
+FROM 
+    Consulta C
+JOIN 
+    Animal A ON C.idAnimal = A.idAnimal
+JOIN 
+    Consulta_prescreve CP ON C.idConsulta = CP.idConsulta
+JOIN 
+    Medicamento M ON CP.idMedicamento = M.idMedicamento
+JOIN 
+    Pessoa P ON A.idPessoa = P.idPessoa
+LEFT JOIN 
+    Contatos Ct ON P.idPessoa = Ct.idPessoa
+WHERE 
+    (CP.dosagem LIKE '%anual%' OR CP.dosagem LIKE '%1% %ano%' ) -- tratamento para encontrar doses anuais
+    AND (
+        C.dataConsulta <= DATE_SUB(CURDATE(), INTERVAL 11 MONTH)
+    )
+GROUP BY 
+    C.idConsulta, 
+    A.nome, 
+    M.descricao, 
+    CP.dosagem, 
+    C.dataConsulta, 
+    P.nome
+ORDER BY 
+    C.dataConsulta ASC
+LIMIT 0, 50000;
 
--- Consulta com GROUP BY e HAVING
-SELECT cidade, COUNT(*) AS total FROM Pessoa GROUP BY cidade HAVING total > 1;
+-- F6
+-- Recupera as dosagens do medicamento 'Ambroxol' onde existe pelo menos uma dosagem maior que 4 ou menor que 1 registrada em qualquer consulta.
+SELECT 
+    CP.dosagem AS DosagemPrescrita
+FROM 
+    Consulta_prescreve CP
+JOIN 
+    Medicamento M ON CP.idMedicamento = M.idMedicamento
+WHERE 
+    M.descricao = 'Ambroxol' 
+    AND (
+        EXISTS (
+            SELECT 1
+            FROM Consulta_prescreve CP_sub
+            WHERE CP_sub.idMedicamento = M.idMedicamento
+            AND (CP_sub.dosagem > 4 OR CP_sub.dosagem < 1)  -- Verifica se existe qualquer dosagem que atenda às condições
+        )
+    );
+    
+-- F7 
+-- Recupera o id da consulta, o nome do animal, a data da consulta, a data limite de retorno, o nome do tutor e os telefones do tutor onde a consulta ainda não teve retorno, ordenados da mais antiga para a mais nova.
 
+   SELECT 
+    C.idConsulta AS IdConsulta,
+    A.nome AS NomeAnimal,
+    C.dataConsulta AS DataConsulta,
+    C.dataLimiteRetorno AS DataLimiteRetorno,
+    P.nome AS NomeTutor,
+    GROUP_CONCAT(Ct.telefone SEPARATOR ', ') AS TelefonesTutor
+FROM 
+    Consulta C
+JOIN 
+    Animal A ON C.idAnimal = A.idAnimal
+JOIN 
+    Pessoa P ON A.idPessoa = P.idPessoa
+LEFT JOIN 
+    Contatos Ct ON P.idPessoa = Ct.idPessoa
+WHERE 
+    C.dataRealRetorno IS NULL  -- Verifica se a dataRealRetorno ainda não foi preenchida
+GROUP BY 
+    C.idConsulta, A.nome, C.dataConsulta, C.dataLimiteRetorno, P.nome
+ORDER BY 
+    C.dataConsulta ASC;
+    
+-- F8
+-- Recupera o nome de todos os veterinários que prescreveram medicamentos em todas as consultas nas quais participaram.
+
+SELECT nome
+FROM Pessoa p
+WHERE tipo = 'Veterinario'
+  AND idPessoa = ALL (
+        SELECT c.idPessoa
+        FROM Consulta c
+        JOIN Consulta_prescreve cp ON c.idConsulta = cp.idConsulta
+        WHERE c.idPessoa = p.idPessoa
+    );
+
+    
+-- f9
+-- Recupera o nome, espécie, data de nascimento e raça de todos os animais que sejam porquinho-da-índia, hamster ou coelho.
+SELECT nome, especie, raca, dataNasc
+FROM Animal
+WHERE especie IN ('porquinho da índia', 'hamster', 'coelho')
+Order BY especie, nome;
+
+-- F10
+-- Recupera a dosagem, o nome do animal, a espécie, o id da consulta e o nome do veterinário onde a dosagem do medicamento Ambroxol foi superior a alguma dosagem aplicada pelo veterinário de id 3.
+-- Neste exemplo, para facilitar a tratação de dados, estamos considerando que os registros do ambroxol sejam sempre feitos sempre no formato 'valor mg'
+
+SELECT 
+    CP.dosagem AS DosagemPrescrita,
+    A.nome AS NomeAnimal,
+    A.especie AS Especie,
+    C.idConsulta AS IdConsulta,
+    P.nome AS NomeVeterinario
+FROM 
+    Consulta_prescreve CP
+JOIN 
+    Medicamento M ON CP.idMedicamento = M.idMedicamento
+JOIN 
+    Consulta C ON CP.idConsulta = C.idConsulta
+JOIN 
+    Animal A ON C.idAnimal = A.idAnimal
+JOIN 
+    Pessoa P ON C.idPessoa = P.idPessoa
+WHERE 
+    M.descricao = 'Ambroxol'
+    AND CP.dosagem > SOME (
+        SELECT CP2.dosagem
+        FROM Consulta_prescreve CP2
+        JOIN Consulta C2 ON CP2.idConsulta = C2.idConsulta
+        WHERE CP2.idMedicamento = M.idMedicamento
+        AND C2.idPessoa = 3  
+    );
+    
+-- F11
+-- Recupera o id e o nome dos tutores que não possuem nenhum animal cadastrado na clínica.
+
+SELECT 
+    P.idPessoa, 
+    P.nome AS NomeTutor
+FROM 
+    Pessoa P
+WHERE 
+    P.tipo = 'Tutor'
+    AND NOT EXISTS (
+        SELECT 1 
+        FROM Animal A
+        WHERE A.idPessoa = P.idPessoa
+    );
+    
+-- F12
+-- Recupera o nome dos veterinários, a descrição dos exames e a quantidade de cada exame solicitado por veterinário.
+
+SELECT 
+    P.nome AS NomeVeterinario,
+    E.descricao AS DescricaoExame,
+    COUNT(*) AS QuantidadeExamesSolicitados
+FROM 
+    Consulta C
+JOIN 
+    Pessoa P ON C.idPessoa = P.idPessoa
+JOIN 
+    Consulta_Solicita CS ON C.idConsulta = CS.idConsulta
+JOIN 
+    Exame E ON CS.idExame = E.idExame
+WHERE 
+    P.tipo = 'Veterinário'
+GROUP BY 
+    P.nome, E.descricao
+ORDER BY 
+    P.nome, QuantidadeExamesSolicitados DESC;
+    
+-- f13
+-- Recupera o nome dos tutores ou ambos e a quantidade de animais que cada um possui, ordenados pela quantidade de animais em ordem decrescente.
+SELECT 
+    P.nome AS NomeTutor,
+    COUNT(A.idAnimal) AS QuantidadeAnimais
+FROM 
+    Pessoa P
+JOIN 
+    Animal A ON P.idPessoa = A.idPessoa
+GROUP BY 
+    P.nome
+ORDER BY 
+    QuantidadeAnimais DESC;
 
 -- (g) Exemplos de Criação de 3 Visões (Views)
 -- 1. Visão: View_Animal_Consulta
@@ -765,11 +974,10 @@ JOIN
 -- Como Usar:
 SELECT * FROM View_Consulta_Prescricao WHERE NomeVeterinario = 'Dr. José';
 
--- ========================================
--- TESTAR
--- ========================================
+
 -- (h) Exemplos de Criação de Usuários, Concessão (GRANT) e Revogação (REVOKE) de Permissão de Acesso
 -- 1. Criação de Usuários
+SET SQL_SAFE_UPDATES = 0;
 
 CREATE USER 'usuario_vet'@'localhost' IDENTIFIED BY 'senha123';
 CREATE USER 'usuario_admin'@'localhost' IDENTIFIED BY 'admin123';
@@ -780,14 +988,14 @@ GRANT ALL PRIVILEGES ON ClinicaVeterinaria.* TO 'usuario_admin'@'localhost';
 
 -- 3. Revogação de Permissões
 REVOKE UPDATE ON ClinicaVeterinaria.* FROM 'usuario_vet'@'localhost';
--- ==========================================
--- ==========================================
+REVOKE ALL PRIVILEGES, GRANT OPTION FROM 'usuario_admin'@'localhost';
+
 
 -- (i) Exemplos de 3 Procedimentos/Funções
--- 1. Procedimento Sem Parâmetros
+-- Procedimento Sem Parâmetros
 -- Primeiro, certifique-se de estar usando o banco de dados correto
 USE clinicaveterinaria;
--- Defina o delimitador para evitar conflitos com o ponto e vírgula no código
+
 DELIMITER //
 -- Crie o procedimento
 CREATE PROCEDURE ListarVeterinarios()
@@ -800,60 +1008,72 @@ DELIMITER ;
 --  Como Usar:
 CALL ListarVeterinarios();
 
--- 2. Procedimento Com Parâmetro de Entrada
--- Primeiro, certifique-se de estar usando o banco de dados correto
-USE clinicaveterinaria;
--- Defina o delimitador para evitar conflitos com o ponto e vírgula no código
-DELIMITER //
--- Crie o procedimento
-CREATE PROCEDURE ListarConsultasAnimal(IN animalNome VARCHAR(100))
+-- 3. Exemplo de Procedimento Sem Parâmetros de Saída
+-- Neste exemplo, o procedimento listarConsultasDoAno simplesmente 
+-- lista todas as consultas de um determinado ano, sem precisar de parâmetros de saída.
+
+DELIMITER $$
+
+CREATE PROCEDURE listarConsultasDoAno(
+    IN p_ano INT
+)
 BEGIN
-    SELECT c.dataConsulta, p.nome AS Veterinario
-    FROM Consulta c
-    JOIN Animal a ON c.idAnimal = a.idAnimal
-    JOIN Pessoa p ON c.idPessoa = p.idPessoa
-    WHERE a.nome = animalNome;
-END //
+    SELECT idConsulta, idPessoa, dataConsulta
+    FROM Consulta
+    WHERE YEAR(dataConsulta) = p_ano;
+END$$
 
--- Restaure o delimitador para o padrão
 DELIMITER ;
+CALL listarConsultasDoAno(2024);
 
--- Como Usar:
-CALL ListarConsultasAnimal('Thor');
+-- Função para calcular a idade de um animal a partir da data de nascimento (com parâmetros de entrada e saída)
 
--- ========================================
--- TESTAR
--- ========================================
--- 3. Função Com Parâmetro de Entrada e Saída
-DELIMITER //
+DELIMITER $$
 
-CREATE FUNCTION CalcularIdadeAnimal(animalId INT) 
+CREATE FUNCTION calcularIdade(dataNasc DATE) 
 RETURNS INT
 DETERMINISTIC
-READS SQL DATA
 BEGIN
     DECLARE idade INT;
-    DECLARE dataNasc DATE;
-
-    -- Obter a data de nascimento do animal
-    SELECT dataNasc INTO dataNasc
-    FROM Animal
-    WHERE idAnimal = animalId;
-
-    -- Calcular a idade com base na data de nascimento
-    SET idade = YEAR(CURDATE()) - YEAR(dataNasc);
-
-    -- Corrigir a idade se o animal ainda não fez aniversário este ano
-    IF MONTH(CURDATE()) < MONTH(dataNasc) OR 
-       (MONTH(CURDATE()) = MONTH(dataNasc) AND DAY(CURDATE()) < DAY(dataNasc)) THEN
-        SET idade = idade - 1;
-    END IF;
-
+    
+    SET idade = TIMESTAMPDIFF(YEAR, dataNasc, CURDATE());
+    
     RETURN idade;
-END //
+END$$
 
 DELIMITER ;
--- ==========================================================
+-- Como Usar
+SELECT calcularIdade('2018-08-20');
+
+-- 2. Procedimento para atualizar a dosagem de um medicamento prescrito (com parâmetros de entrada)
+
+DELIMITER $$
+
+CREATE PROCEDURE atualizarDosagem(
+    IN p_idConsulta INT, 
+    IN p_idMedicamento INT, 
+    IN novaDosagem VARCHAR(60)
+)
+BEGIN
+    DECLARE dosagemAtual VARCHAR(60);
+    
+    SELECT dosagem INTO dosagemAtual
+    FROM Consulta_prescreve
+    WHERE idConsulta = p_idConsulta AND idMedicamento = p_idMedicamento;
+    
+    IF dosagemAtual IS NOT NULL THEN
+        UPDATE Consulta_prescreve
+        SET dosagem = novaDosagem
+        WHERE idConsulta = p_idConsulta AND idMedicamento = p_idMedicamento;
+    ELSE
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Medicamento não encontrado para esta consulta.';
+    END IF;
+END$$
+
+DELIMITER ;
+-- Como Usar
+CALL atualizarDosagem(44, 44, '500mg 2x ao dia');
+
 
 -- (j) Exemplos de 3 Triggers
 -- 1. Trigger Para Inserção
@@ -865,14 +1085,14 @@ CREATE TRIGGER InserirContatoPadrao AFTER INSERT ON Pessoa
 FOR EACH ROW
 BEGIN
     INSERT INTO Contatos (telefone, email, idPessoa) 
-    VALUES ('0000-0000', 'sememail@dominio.com', NEW.idPessoa);
+    VALUES ('0000-111', 'semeil@dominio.com', NEW.idPessoa);
 END //
 
 DELIMITER ;
 -- Como Disparar:
 
 INSERT INTO Pessoa (CRMV, CPF, nome, bairro, numero, cidade, estado, rua, complemento, tipo)
-VALUES ('', '12345678900', 'Novo Tutor', 'Centro', 10, 'Lisboa', 'PT', 'Rua A', '', 'Tutor');
+VALUES ('0 ', '13345678900', 'Novo Tutor', 'Centro', 10, 'Lisboa', 'PT', 'Rua A', '', 'Tutor');
 -- 2. Trigger Para Alteração
 -- Este trigger atualiza a data de retorno real ao alterar uma consulta.
 
@@ -905,9 +1125,11 @@ DELIMITER ;
 -- Como Disparar:
 DELETE FROM Animal WHERE idAnimal = 1;
 
+
 -- PARA A ALTERNATIVA J EXISTE UM TRIGGER MUITO ÚTIL
 -- NA HORA DE GARANTIR Q A DATA LIMITE DE RETORNO 
 -- À CONSULTA SEJA DE ATÉ 30 DIAS (para update e inserção), interessante utilizar
+
 
 -- Trigger para garantir que dataLimiteRetorno seja até 30 dias após dataConsulta
 DELIMITER //
