@@ -1034,10 +1034,8 @@ SELECT * FROM View_Consulta_Prescricao WHERE NomeVeterinario = 'Vinícius Olivei
 
 -- (h) Exemplos de Criação de Usuários, Concessão (GRANT) e Revogação (REVOKE) de Permissão de Acesso
 -- 1. Criação de Usuários
-SET SQL_SAFE_UPDATES = 0;
-
-CREATE USER 'usuario_vet'@'localhost' IDENTIFIED BY 'senha123';
-CREATE USER 'usuario_admin'@'localhost' IDENTIFIED BY 'admin123';
+CREATE USER IF NOT EXISTS 'usuario_vet'@'localhost' IDENTIFIED BY 'senha123';
+CREATE USER IF NOT EXISTS 'usuario_admin'@'localhost' IDENTIFIED BY 'admin123';
 
 -- 2. Concessão de Permissões
 GRANT SELECT, INSERT, UPDATE ON ClinicaVeterinaria.* TO 'usuario_vet'@'localhost';
