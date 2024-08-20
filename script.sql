@@ -22,7 +22,7 @@ CREATE TABLE IF NOT EXISTS Pessoa (
     UNIQUE INDEX CPF_UNIQUE (CPF ASC) VISIBLE)
 ENGINE = InnoDB;
 
--- Criação da tabela Contatos: Vinculado à tabela Pessoa, armazena os contato(telefone e e-mail) das pessoas.
+-- Criação da tabela Contatos: Vinculado à tabela Pessoa, armazena os contatos(telefone e e-mail) das pessoas.
 CREATE TABLE IF NOT EXISTS Contatos (
     idContato INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     telefone VARCHAR(19),
@@ -63,6 +63,7 @@ CREATE TABLE IF NOT EXISTS Consulta (
     idPessoa INT NOT NULL,
     dataRealRetorno DATETIME NULL,
     dataLimiteRetorno DATE NOT NULL,
+    UNIQUE KEY (idAnimal, dataConsulta),
     INDEX fk_Consulta_Animal_idx (idAnimal ASC) VISIBLE,
     INDEX fk_Consulta_Pessoa_idx (idPessoa ASC) VISIBLE,
     INDEX uq_consulta (dataConsulta ASC, idAnimal ASC) VISIBLE,
