@@ -39,7 +39,7 @@
             }
 
         } catch (mysqli_sql_exception $e) {
-            echo $e->getMessage();
+            //echo $e->getMessage();
             echo "<div class='error-message'>Não foi possível atualizar o registro. Verifique se os campos estão preenchidos corretamente.</div>";
         }
     }

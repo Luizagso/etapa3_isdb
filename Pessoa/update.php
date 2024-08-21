@@ -77,21 +77,21 @@
 
     <h2>Editar Pessoa</h2>
     <form method="post" action="">
-        Nome: <input type="text" name="nome" value="<?php echo $row['nome']; ?>" required><br>
-        CPF: <input type="text" name="cpf" value="<?php echo $row['CPF']; ?>" required><br>
-        Bairro: <input type="text" name="bairro" value="<?php echo $row['bairro']; ?>" required><br>
-        Número: <input type="text" name="numero" value="<?php echo $row['numero']; ?>" required><br>
-        Cidade: <input type="text" name="cidade" value="<?php echo $row['cidade']; ?>" required><br>
-        Estado: <input type="text" name="estado" value="<?php echo $row['estado']; ?>" required><br>
-        Rua: <input type="text" name="rua" value="<?php echo $row['rua']; ?>" required><br>
-        Complemento: <input type="text" name="complemento" value="<?php echo $row['complemento']; ?>"><br>
+        Nome: <input type="text" name="nome" value="<?php echo $row['nome']; ?>" required maxlength="60"><br>
+        CPF: <input type="text" name="cpf" value="<?php echo $row['CPF']; ?>" required maxlength="14" id="cpf" onkeyup="aplicarMascaraCPF(this)" ><br>
+        Bairro: <input type="text" name="bairro" value="<?php echo $row['bairro']; ?>" required maxlength="60"><br>
+        Número: <input type="number" name="numero" value="<?php echo $row['numero']; ?>" required><br>
+        Cidade: <input type="text" name="cidade" value="<?php echo $row['cidade']; ?>" required maxlength="60"><br>
+        Estado: <input type="text" name="estado" value="<?php echo $row['estado']; ?>" required maxlength="60"><br>
+        Rua: <input type="text" name="rua" value="<?php echo $row['rua']; ?>" required maxlength="60"><br>
+        Complemento: <input type="text" name="complemento" value="<?php echo $row['complemento']; ?>" maxlength="60"><br>
         Tipo: 
         <select name="tipo" id="tipo" onchange="toggleCRMV()">
             <option value="Veterinario" <?php if ($row['tipo'] == 'Veterinario') echo 'selected'; ?>>Veterinário</option>
             <option value="Tutor" <?php if ($row['tipo'] == 'Tutor') echo 'selected'; ?>>Tutor</option>
             <option value="Ambos" <?php if ($row['tipo'] == 'Ambos') echo 'selected'; ?>>Ambos</option>
         </select><br>
-        CRMV: <input type="text" id="crmv" name="crmv" value="<?php echo $row['CRMV']; ?>"><br>
+        CRMV: <input type="text" id="crmv" name="crmv" value="<?php echo $row['CRMV']; ?>" maxlength="20"><br>
         <input type="submit" value="Atualizar Pessoa">
     </form>
 
@@ -108,6 +108,20 @@
                 crmvField.required = false;
             }
         }
+
+        function aplicarMascaraCPF(campo) {
+            var cpf = campo.value.replace(/\D/g, ""); // Remove qualquer caractere não numérico
+            // Limita o CPF a 11 dígitos
+            if (cpf.length > 11) {
+                cpf = cpf.substring(0, 11);
+            }
+            // Aplica a máscara
+            cpf = cpf.replace(/(\d{3})(\d)/, "$1.$2");
+            cpf = cpf.replace(/(\d{3})(\d)/, "$1.$2");
+            cpf = cpf.replace(/(\d{3})(\d{1,2})$/, "$1-$2");
+            campo.value = cpf;
+        }
+
     </script>
 
 </body>

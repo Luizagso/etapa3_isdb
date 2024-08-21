@@ -20,7 +20,7 @@
             }
 
         } catch (mysqli_sql_exception $e) {
-            echo $e->getMessage();
+            //echo $e->getMessage();
             echo "<div class='error-message'>Não foi possível salvar o registro. Verifique se essa consulta pode ser cadastrada ou se os campos estão preenchidos corretamente.</div>";
         }
     }
