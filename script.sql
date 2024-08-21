@@ -1158,7 +1158,8 @@ END //
 DELIMITER ;
 -- Como Disparar:
 -- Exclua um animal para acionar o trigger e registrar a exclusão no log.
-DELETE FROM Animal WHERE idAnimal = 1;
+DELETE FROM consulta WHERE idAnimal = 4;
+DELETE FROM Animal WHERE idAnimal = 4;
 
 -- 4. Trigger para garantir que dataLimiteRetorno seja até 30 dias após dataConsulta durante a inserção.
 DELIMITER //
@@ -1170,8 +1171,12 @@ BEGIN
     IF NEW.dataLimiteRetorno IS NOT NULL AND NEW.dataConsulta IS NOT NULL THEN
         IF NEW.dataLimiteRetorno > DATE_ADD(NEW.dataConsulta, INTERVAL 30 DAY) THEN
             SIGNAL SQLSTATE '45000'
-            SET MESSAGE_TEXT = 'dataLimiteRetorno deve ser até 30 dias após dataConsulta';
+            SET MESSAGE_TEXT = 'ERRO INTENCIONAL: dataLimiteRetorno deve ser até 30 dias após dataConsulta';
         END IF;
     END IF;
 END//
 DELIMITER ;
+-- Como disparar (Sem erro)
+INSERT INTO Consulta (idAnimal, idPessoa, dataConsulta, dataLimiteRetorno) VALUES (9, 1, '2024-08-01', '2024-08-15');
+-- Como dispara (Com Erro Disparado Intencionalmente)
+INSERT INTO Consulta (idAnimal, idPessoa, dataConsulta, dataLimiteRetorno) VALUES (9, 1, '2024-08-02', '2024-09-02');
