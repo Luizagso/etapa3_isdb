@@ -65,19 +65,19 @@
         </select><br>
 
         <label for="registro">Registro:</label>
-        <input type="text" name="registro" required><br>
+        <input type="text" name="registro" required maxlength="20"><br>
 
         <label for="dataNasc">Data de Nascimento:</label>
         <input type="date" name="dataNasc" required><br>
 
         <label for="nome">Nome:</label>
-        <input type="text" name="nome" required><br>
+        <input type="text" name="nome" required maxlength="60"><br>
 
         <label for="raca">Raça:</label>
-        <input type="text" name="raca" required><br>
+        <input type="text" name="raca" required maxlength="60"><br>
 
         <label for="especie">Espécie:</label>
-        <input type="text" name="especie" required><br>
+        <input type="text" name="especie" required maxlength="60"><br>
 
         <label for="sexo">Sexo:</label>
         <select name="sexo" required>

@@ -81,19 +81,19 @@
         </select><br>
 
         <label for="registro">Registro:</label>
-        <input type="text" name="registro" value="<?php echo $row['registro']; ?>" required><br>
+        <input type="text" name="registro" value="<?php echo $row['registro']; ?>" required maxlength="20"><br>
 
         <label for="dataNasc">Data de Nascimento:</label>
         <input type="date" name="dataNasc" value="<?php echo $row['dataNasc']; ?>" required><br>
 
         <label for="nome">Nome:</label>
-        <input type="text" name="nome" value="<?php echo $row['nome']; ?>" required><br>
+        <input type="text" name="nome" value="<?php echo $row['nome']; ?>" required maxlength="60"><br>
 
         <label for="raca">Raça:</label>
-        <input type="text" name="raca" value="<?php echo $row['raca']; ?>" required><br>
+        <input type="text" name="raca" value="<?php echo $row['raca']; ?>" required maxlength="60"><br>
 
         <label for="especie">Espécie:</label>
-        <input type="text" name="especie" value="<?php echo $row['especie']; ?>" required><br>
+        <input type="text" name="especie" value="<?php echo $row['especie']; ?>" required maxlength="60"><br>
 
         <label for="sexo">Sexo:</label>
         <select name="sexo" required>
