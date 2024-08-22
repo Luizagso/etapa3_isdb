@@ -31,6 +31,17 @@
         <a href="../Consulta/index.php">Consulta</a>
     </div>
     <div class="container">
+
+        <?php
+            $message = isset($_GET['message']) ? $_GET['message'] : '';
+            $type = isset($_GET['type']) ? $_GET['type'] : '';
+
+            if ($message) {
+                $class = ($type === 'success') ? 'success-message' : 'error-message';
+                echo "<div class='$class'>$message</div>";
+            }
+        ?>
+
         <h2>Detalhes da Pessoa</h2>
 
         <?php if ($pessoa): ?>
@@ -102,11 +113,13 @@
                 <tr>
                     <th>Telefone</th>
                     <th>Email</th>
+                    <th>Ações</th>
                 </tr>
                 <?php while($contato = $result_contatos->fetch_assoc()): ?>
                 <tr>
                     <td><?php echo $contato['telefone']; ?></td>
                     <td><?php echo $contato['email']; ?></td>
+                    <td><a href='#' onclick='confirmDelete(<?php echo $contato["idContato"]; ?>, <?php echo $contato["idPessoa"]; ?>)'>Deletar</a></td>
                 </tr>
                 <?php endwhile; ?>
             </table>
@@ -129,23 +142,43 @@
         </div>
     </div>
 
+    <!-- Modal de Confirmação -->
+    <div id="deleteModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('deleteModal')">&times;</span>
+            <p>Tem certeza que deseja deletar este contato?</p>
+            <a id="confirmDeleteButton" href="#" class="modal-button" onclick='confirmDelete(<?php echo $contato["idContato"]; ?>, <?php echo $contato["idPessoa"]; ?>)'>Sim</a>
+            <button class="cancel-button" onclick="closeModal('deleteModal')">Cancelar</button>
+        </div>
+    </div>
+
     <script>
         // Função para abrir o modal
         function openModal(modalId) {
             document.getElementById(modalId).style.display = "block";
         }
 
-        // Função para fechar o modal
         function closeModal(modalId) {
             document.getElementById(modalId).style.display = "none";
         }
 
         // Fecha o modal se o usuário clicar fora dele
         window.onclick = function(event) {
-            var contatoModal = document.getElementById('contatoModal');
-            if (event.target == contatoModal) {
-                contatoModal.style.display = "none";
+            // Obtém todos os modais na página
+            var modals = document.getElementsByClassName('modal');
+            // Verifica cada modal para ver se o clique foi fora dele
+            for (var i = 0; i < modals.length; i++) {
+                if (event.target == modals[i]) {
+                    modals[i].style.display = "none";
+                }
             }
+        }
+
+        function confirmDelete(idContato, idPessoa) {
+            var modal = document.getElementById("deleteModal");
+            var confirmButton = document.getElementById("confirmDeleteButton");
+            confirmButton.href = "Contato/delete.php?idContato=" + idContato + "&idPessoa=" + idPessoa;;
+            modal.style.display = "block";
         }
     </script>
 </body>
