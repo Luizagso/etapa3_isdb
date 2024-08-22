@@ -26,6 +26,8 @@ table, th, td {
 th, td {
     padding: 10px;
     text-align: left;
+    text-align: center;
+    vertical-align: middle;
 }
 
 th {
@@ -296,4 +298,19 @@ button:hover{
 
 #dataLimiteRetorno {
     background-color: rgb(197, 197, 197);
+}
+
+.button-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+.right-buttons {
+    display: flex;
+}
+
+.right-buttons button {
+    margin-left: 10px; /* Espaçamento entre os botões da direita */
 }

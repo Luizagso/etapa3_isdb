@@ -1,6 +1,20 @@
 <?php
     include '../config.php';
-    $sql = "SELECT * FROM Pessoa ORDER BY nome";
+    $sql = "SELECT 
+                p.*, 
+                COUNT(a.idAnimal) AS quantidade_animais
+            FROM 
+                Pessoa p 
+            LEFT JOIN 
+                Animal a 
+            ON 
+                p.idPessoa = a.idPessoa
+            WHERE 
+                p.tipo = 'Tutor' OR p.tipo = 'Ambos'
+            GROUP BY 
+                p.idPessoa
+            ORDER BY 
+                p.nome;";
     $result = $conn->query($sql);
 ?>
 
@@ -35,6 +49,7 @@
         <div class="right-buttons">
             <button><a href="veterinarios.php">Veterinarios</a></button>
             <button><a href="tutores.php">Tutores</a></button>
+            <button><a href="index.php">Todos</a></button>
         </div>
     </div>
     <table border="1">
@@ -50,6 +65,7 @@
             <th>Rua</th>
             <th>Complemento</th>
             <th>Tipo</th>
+            <th>Quantidade <br> de Animais</th>
             <th>Ações</th>
         </tr>
         <?php
@@ -67,6 +83,7 @@
                 echo "<td>" . $row["rua"]. "</td>";
                 echo "<td>" . $row["complemento"]. "</td>";
                 echo "<td>" . $row["tipo"]. "</td>";
+                echo "<td>" . $row["quantidade_animais"]. "</td>";
                 echo "<td><a href='update.php?idPessoa=" . $row["idPessoa"] . "'>Editar</a> | ";
                 echo "<a href='#' onclick='confirmDelete(" . $row["idPessoa"] . ")'>Deletar</a> | ";
                 echo "<a href='visualizar.php?idPessoa= " . $row["idPessoa"] . " '>Visualizar</a> </td>";

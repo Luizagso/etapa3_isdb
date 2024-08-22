@@ -66,7 +66,7 @@
         <select name="idPessoa" required>
             <?php
                 include '../config.php';
-                $sql = "SELECT idPessoa, nome FROM Pessoa";
+                $sql = "SELECT idPessoa, nome FROM Pessoa ORDER BY nome";
                 $resultTutors = $conn->query($sql);
 
                 if ($resultTutors->num_rows > 0) {

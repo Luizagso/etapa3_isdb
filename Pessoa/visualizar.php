@@ -4,7 +4,8 @@
     $idPessoa = $_GET['idPessoa'];
 
     // Consulta SQL para buscar os detalhes da pessoa
-    $sql = "SELECT * FROM Pessoa WHERE idPessoa = $idPessoa";
+    $sql = "SELECT p.*, COUNT(a.idAnimal) AS quantidade_animais FROM Pessoa p LEFT JOIN Animal a ON 
+                p.idPessoa = a.idPessoa WHERE p.idPessoa = $idPessoa";
     $result = $conn->query($sql);
     $pessoa = $result->fetch_assoc();
 
@@ -84,6 +85,12 @@
                 <th>Tipo</th>
                 <td><?php echo $pessoa['tipo']; ?></td>
             </tr>
+            <?php if ($pessoa['quantidade_animais'] != 0) { ?>
+                <tr>
+                    <th>Quantidade de Animais</th>
+                    <td><?php echo $pessoa['quantidade_animais']; ?></td>
+                </tr>
+            <?php } ?>
         </table>
 
         <hr>

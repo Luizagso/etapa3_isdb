@@ -46,7 +46,7 @@
         <select name="idAnimal" required>
             <option value="">Selecione o Animal</option>
             <?php
-                $sql = "SELECT idAnimal, nome FROM Animal";
+                $sql = "SELECT idAnimal, nome FROM Animal ORDER BY nome";
                 $result = $conn->query($sql);
 
                 if ($result->num_rows > 0) {
@@ -66,7 +66,7 @@
         <select name="idPessoa" required>
             <option value="">Selecione o Veterinário</option>
             <?php
-                $sql = "SELECT idPessoa, nome FROM Pessoa WHERE tipo = 'Veterinario' OR tipo = 'Ambos'";
+                $sql = "SELECT idPessoa, nome FROM Pessoa WHERE tipo = 'Veterinario' OR tipo = 'Ambos' ORDER BY nome";
                 $result = $conn->query($sql);
 
                 if ($result->num_rows > 0) {

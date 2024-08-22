@@ -51,7 +51,7 @@
         <select name="idPessoa" required>
             <option value="">Selecione o Tutor</option>
             <?php
-                $sql = "SELECT idPessoa, nome FROM Pessoa";
+                $sql = "SELECT idPessoa, nome FROM Pessoa WHERE tipo = 'Tutor' OR tipo = 'Ambos' ORDER BY nome";
                 $result = $conn->query($sql);
 
                 if ($result->num_rows > 0) {

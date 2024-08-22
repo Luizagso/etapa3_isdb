@@ -1,6 +1,6 @@
 <?php
     include '../config.php';
-    $sql = "SELECT * FROM Pessoa ORDER BY nome";
+    $sql = "SELECT * FROM Pessoa WHERE tipo = 'Veterinario' OR tipo = 'Ambos' ORDER BY nome";
     $result = $conn->query($sql);
 ?>
 
@@ -35,6 +35,7 @@
         <div class="right-buttons">
             <button><a href="veterinarios.php">Veterinarios</a></button>
             <button><a href="tutores.php">Tutores</a></button>
+            <button><a href="index.php">Todos</a></button>
         </div>
     </div>
     <table border="1">
