@@ -1107,27 +1107,7 @@ CALL atualizarDosagem(45, 45, '500mg 2x ao dia');
 
 
 -- (j) Exemplos de 3 Triggers
--- 1. Trigger para garantir que dataLimiteRetorno seja até 30 dias após dataConsulta durante a inserção.
-DELIMITER //
-CREATE TRIGGER trg_check_dataLimiteRetorno
-BEFORE INSERT ON Consulta
-FOR EACH ROW
-BEGIN
-    -- Verifica se a dataLimiteRetorno não é nula e se não ultrapassa 30 dias após a data da consulta
-    IF NEW.dataLimiteRetorno IS NOT NULL AND NEW.dataConsulta IS NOT NULL THEN
-        IF NEW.dataLimiteRetorno > DATE_ADD(NEW.dataConsulta, INTERVAL 30 DAY) THEN
-            SIGNAL SQLSTATE '45000'
-            SET MESSAGE_TEXT = 'ERRO INTENCIONAL: dataLimiteRetorno deve ser até 30 dias após dataConsulta';
-        END IF;
-    END IF;
-END//
-DELIMITER ;
--- Como disparar (Sem erro)
-INSERT INTO Consulta (idAnimal, idPessoa, dataConsulta, dataLimiteRetorno) VALUES (9, 1, '2024-08-01', '2024-08-15');
--- Como dispara (Com Erro Disparado Intencionalmente)
-INSERT INTO Consulta (idAnimal, idPessoa, dataConsulta, dataLimiteRetorno) VALUES (9, 1, '2024-08-02', '2024-09-02');
-
--- 2. Trigger Para Alteração
+-- 1. Trigger Para Alteração
 -- Este trigger atualiza automaticamente a data limite de retorno ao modificar a data real de retorno em uma consulta.
 DELIMITER //
 CREATE TRIGGER AtualizarDataRetorno BEFORE UPDATE ON Consulta
@@ -1164,3 +1144,23 @@ DELIMITER ;
 -- Exclua um animal para acionar o trigger e registrar a exclusão no log.
 DELETE FROM consulta WHERE idAnimal = 4;
 DELETE FROM Animal WHERE idAnimal = 4;
+
+-- 3. Trigger para garantir que dataLimiteRetorno seja até 30 dias após dataConsulta durante a inserção.
+DELIMITER //
+CREATE TRIGGER trg_check_dataLimiteRetorno
+BEFORE INSERT ON Consulta
+FOR EACH ROW
+BEGIN
+    -- Verifica se a dataLimiteRetorno não é nula e se não ultrapassa 30 dias após a data da consulta
+    IF NEW.dataLimiteRetorno IS NOT NULL AND NEW.dataConsulta IS NOT NULL THEN
+        IF NEW.dataLimiteRetorno > DATE_ADD(NEW.dataConsulta, INTERVAL 30 DAY) THEN
+            SIGNAL SQLSTATE '45000'
+            SET MESSAGE_TEXT = 'ERRO INTENCIONAL: dataLimiteRetorno deve ser até 30 dias após dataConsulta';
+        END IF;
+    END IF;
+END//
+DELIMITER ;
+-- Como disparar (Sem erro)
+INSERT INTO Consulta (idAnimal, idPessoa, dataConsulta, dataLimiteRetorno) VALUES (9, 1, '2024-08-01', '2024-08-15');
+-- Como dispara (Com Erro Disparado Intencionalmente)
+INSERT INTO Consulta (idAnimal, idPessoa, dataConsulta, dataLimiteRetorno) VALUES (9, 1, '2024-08-02', '2024-09-02');
